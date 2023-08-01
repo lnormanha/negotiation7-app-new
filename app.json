@@ -14,7 +14,8 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.negotiation70"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,11 +30,16 @@
     },
     "plugins": [
       "expo-router",
-      "onesignal-expo-plugin",
-      {
-        "mode": "development"
-      }
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
+      ]
     ],
+    "extra": {
+      "oneSignalAppId": "1a344dce-5f8d-4643-9b05-4915626d3c08"
+    },
     "experiments": {
       "tsconfigPaths": true,
       "typedRoutes": true
