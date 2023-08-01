@@ -8,17 +8,16 @@ import { Platform } from 'react-native';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
-//   nav: require('./NavigationRedux').reducer,
-//   negotiations: require('./NegotiationsRedux').reducer,
-//   login: require('./LoginRedux').reducer,
-//   signup: require('./SignUpRedux').reducer,
+  negotiations: require('./negotiations/NegotiationsRedux').reducer,
+  login: require('./login/LoginRedux').reducer,
+  signup: require('./sign-up/SignUpRedux').reducer,
 //   facebook_auth: require('./FacebookAuthRedux').reducer,
 //   google_auth: require('./GoogleAuthRedux').reducer,
 //   apple_auth: require('./AppleAuthRedux').reducer,
-//   user: require('./UserRedux').reducer,
+  user: require('./user/UserRedux').reducer,
 //   language: require('./LanguageRedux').reducer,
-//   verify_email: require('./VerifyEmailRedux').reducer,
-//   subscription: require('./SubscriptionRedux').reducer,
+  verify_email: require('./verify-email/VerifyEmailRedux').reducer,
+  subscription: require('./subscription/SubscriptionRedux').reducer,
 });
 
 export default () => {
