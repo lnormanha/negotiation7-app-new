@@ -1,19 +1,50 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+const tintColorLight = "#2f95dc";
+const tintColorDark = "#fff";
 
 export default {
+  background: "#F6F6F6",
+  negotiationCardBg: "#fff",
+  white: "#fff",
+  black: "#000",
+  headerBgHome: "#0A10BA",
+  headerBg: "#F6F6F6",
+  buttonBg: "#0A10BA",
+  title: "#1F394E",
+  clear: "rgba(0,0,0,0)",
+  facebook: "#4267B2",
+  transparent: "rgba(0,0,0,0)",
+  silver: "#F7F7F7",
+  steel: "#CCCCCC",
+  error: "rgba(200, 0, 0, 0.8)",
+  ricePaper: "rgba(255,255,255, 0.75)",
+  frost: "#D8D8D8",
+  cloud: "rgba(200,200,200, 0.35)",
+  windowTint: "rgba(0, 0, 0, 0.4)",
+  panther: "#161616",
+  charcoal: "#595959",
+  coal: "#2d2d2d",
+  bloodOrange: "#fb5f26",
+  snow: "white",
+  ember: "rgba(164, 0, 48, 0.5)",
+  fire: "#e73536",
+  drawer: "rgba(30, 30, 29, 0.95)",
+  eggplant: "#251a34",
+  border: "#483F53",
+  banner: "#5F3E63",
+  text: "#E0D7E5",
+
   light: {
-    text: '#000',
-    background: '#fff',
+    text: "#000",
+    background: "#fff",
     tint: tintColorLight,
-    tabIconDefault: '#ccc',
+    tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#fff',
-    background: '#000',
+    text: "#fff",
+    background: "#000",
     tint: tintColorDark,
-    tabIconDefault: '#ccc',
+    tabIconDefault: "#ccc",
     tabIconSelected: tintColorDark,
   },
 };

@@ -4,11 +4,11 @@
     "slug": "negotiation7-app-new",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/ic_launcher.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/launch_screen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
