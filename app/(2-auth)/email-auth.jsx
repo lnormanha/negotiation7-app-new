@@ -322,15 +322,15 @@ function EmailAuthScreen(props) {
             loginProps.fetching ||
             user.fetching
           }
-          disabled={
-            !forgotPassword
-              ? resetPassword
-                ? password.length < 6 &&
-                  passwordConfirm !== password &&
-                  !resetToken
-                : (!verify && password.length < 6) || !validateEmail()
-              : false
-          }
+          // disabled={
+          //   !forgotPassword
+          //     ? resetPassword
+          //       ? password.length < 6 &&
+          //         passwordConfirm !== password &&
+          //         !resetToken
+          //       : (!verify && password.length < 6) || !validateEmail()
+          //     : false
+          // }
         />
       </BottomContainer>
       {/* <KeyboardSpacer /> */}
