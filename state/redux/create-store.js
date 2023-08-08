@@ -32,7 +32,7 @@ export default (rootReducer, rootSaga) => {
   // enhancers.push(applyMiddleware(...middleware))
 
   // if Reactotron is enabled (default for __DEV__), we'll create the store through Reactotron
-  // const createAppropriateStore = Config.useReactotron ? console.tron.createStore : createStore
+  // const createAppropriateStore = Config.useReactotron ? console.createStore : createStore
   const store = createStore(
     rootReducer
     // compose(middleware)

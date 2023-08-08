@@ -5,15 +5,32 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { Redirect, SplashScreen, Stack, usePathname } from "expo-router";
+import * as Localization from "expo-localization";
+
+import { I18n } from "i18n-js";
+
+import en from "../translations/en.json";
+import pt from "../translations/pt.json";
 
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 
 import { Provider } from "react-redux";
 import createStore from "../state/redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Route } from "expo-router/build/Route";
 
 const store = createStore();
+
+const translations = {
+  en,
+  pt,
+};
+
+const i18n = new I18n(translations);
+i18n.locale = Localization.locale;
+i18n.enableFallback = true;
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -22,7 +39,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "onboarding",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -38,6 +55,22 @@ export default function RootLayout() {
     "Quicksand-Light": require("../assets/fonts/Quicksand-Light.ttf"),
     ...FontAwesome.font,
   });
+
+  function verifySession() {
+    AsyncStorage.getItem("user_id").then((res) => {
+      // if (res) {
+      //   this.props.negotiationsListRequest(res);
+      //   this.props.userRequest(res);
+      //   setTimeout(() => {
+      //     this.props.navigation.replace({routeName: 'HomeScreen'});
+      //   }, 1000);
+      // } else {
+      //   setTimeout(() => {
+      //     this.props.navigation.replace({routeName: 'LaunchScreen'});
+      //   }, 1000);
+      // }
+    });
+  }
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -63,9 +96,12 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        <Stack initialRouteName="onboarding">
+          <Stack.Screen
+            name="(1-onboarding)"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="(2-auth)" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>
     </Provider>

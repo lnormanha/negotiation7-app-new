@@ -15,7 +15,7 @@ export const reducers = combineReducers({
 //   google_auth: require('./GoogleAuthRedux').reducer,
 //   apple_auth: require('./AppleAuthRedux').reducer,
   user: require('./user/UserRedux').reducer,
-//   language: require('./LanguageRedux').reducer,
+  language: require('./languages/LanguageRedux').reducer,
   verify_email: require('./verify-email/VerifyEmailRedux').reducer,
   subscription: require('./subscription/SubscriptionRedux').reducer,
 });
