@@ -19,7 +19,6 @@ const translations = {
 
 const i18n = new I18n(translations);
 
-
 // Styles
 import {
   Container,
@@ -28,96 +27,78 @@ import {
   InputLabel,
   Input,
   Box,
-  AlignCenter
+  AlignCenter,
 } from "./SignUpScreenStyles";
+import { useRouter } from "expo-router";
 
-class SignUpScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      name: "",
-      password: ""
-    };
-  }
+function SignUpScreen({}) {
+  const initialState = {
+    email: "",
+    name: "",
+    password: "",
+  };
+  const [state, setState] = useState(initialState);
+  const { back, push } = useRouter();
+  const { email, name, password } = state;
 
-  submit() {
-    const { email, name, password } = this.state;
+  function submit() {
     const body = {
       name,
       email,
-      password
+      password,
     };
 
     const payload = {
-      body
+      body,
     };
 
-    this.props.signUpRequest(payload);
+    props.signUpRequest(payload);
   }
 
-
-  render() {
-    const { navigation } = this.props;
-    const { navigate, goBack } = navigation;
-    const { email, name, password } = this.state;
-    return (
-      <Container>
-        <Header
-          title={i18n.t("signUpHeader")}
-          onPressLeft={() => goBack()}
-        />
-        <Box />
-        <InputContainer>
-          <InputLabel>{i18n.t("nameLabel")}</InputLabel>
-          <Input
-            placeholder={i18n.t("namePlaceholder")}
-            value={name}
-            onChangeText={text => this.setState({ name: text })}
-          ></Input>
-        </InputContainer>
-        <InputContainer>
-          <InputLabel>{i18n.t("emailLabel")}</InputLabel>
-          <Input
-            placeholder={i18n.t("emailPlaceholder")}
-            value={email}
-            onChangeText={email => this.setState({ email })}
-            autoCapitalize="none"
-            keyboardType="email-address"
-          ></Input>
-        </InputContainer>
-        <InputContainer>
-          <InputLabel>{i18n.t("passwordLabel")} </InputLabel>
-          <Input
-            placeholder={i18n.t("passwordPlaceholder")}
-            value={password}
-            onChangeText={password => this.setState({ password })}
-            secureTextEntry
-          ></Input>
-        </InputContainer>
-        <Button
-          onPress={() => this.submit()}
-          title={i18n.t("signUpButton")}
-        ></Button>
-        <View style={{ marginBottom: 30 }} />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Header title={i18n.t("signUpHeader")} onPressLeft={() => back()} />
+      <Box />
+      <InputContainer>
+        <InputLabel>{i18n.t("nameLabel")}</InputLabel>
+        <Input
+          placeholder={i18n.t("namePlaceholder")}
+          value={name}
+          onChangeText={(text) => setState({ name: text })}
+        ></Input>
+      </InputContainer>
+      <InputContainer>
+        <InputLabel>{i18n.t("emailLabel")}</InputLabel>
+        <Input
+          placeholder={i18n.t("emailPlaceholder")}
+          value={email}
+          onChangeText={(email) => setState({ email })}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        ></Input>
+      </InputContainer>
+      <InputContainer>
+        <InputLabel>{i18n.t("passwordLabel")} </InputLabel>
+        <Input
+          placeholder={i18n.t("passwordPlaceholder")}
+          value={password}
+          onChangeText={(password) => setState({ password })}
+          secureTextEntry
+        ></Input>
+      </InputContainer>
+      <Button onPress={() => submit()} title={i18n.t("signUpButton")}></Button>
+      <View style={{ marginBottom: 30 }} />
+    </Container>
+  );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { signup: state.signup, language: state.language };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   const { signUpRequest } = SignUpActions;
-  return bindActionCreators(
-    { signUpRequest },
-    dispatch
-  );
+  return bindActionCreators({ signUpRequest }, dispatch);
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignUpScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);
