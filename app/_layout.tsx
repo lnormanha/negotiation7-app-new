@@ -96,12 +96,13 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack initialRouteName="onboarding">
+        <Stack>
           <Stack.Screen
             name="(1-onboarding)"
             options={{ headerShown: false }}
           />
           <Stack.Screen name="(2-auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(5-general)" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>
     </Provider>
