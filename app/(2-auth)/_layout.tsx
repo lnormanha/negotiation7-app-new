@@ -23,6 +23,20 @@ export default function AuthLayout() {
           headerShown: false,
         }}
       />
+
+      <Stack.Screen
+        name="terms"
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="privacy-policy"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

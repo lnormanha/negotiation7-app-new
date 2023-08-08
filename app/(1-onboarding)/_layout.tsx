@@ -29,12 +29,6 @@ export default function OnboardingLayout() {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="terms"
-        options={{
-          headerShown: false,
-        }}
-      />
     </Stack>
   );
 }

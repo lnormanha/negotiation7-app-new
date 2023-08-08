@@ -103,7 +103,7 @@ export default function LoginScreen() {
         <TouchableOpacity onPress={() => push("terms")}>
           <LinkText>{i18n.t("termsHeader")}</LinkText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => push("PrivacyPolicyScreen")}>
+        <TouchableOpacity onPress={() => push("privacy-policy")}>
           <LinkText>{i18n.t("privacyHeader")}</LinkText>
         </TouchableOpacity>
       </TextsContainer>
