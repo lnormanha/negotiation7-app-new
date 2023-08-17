@@ -1,8 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { View } from "react-native";
 import { Link, router } from "expo-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+
+// import { FadeInRight } from "react-native-reanimated";
+import Carousel from "react-native-reanimated-carousel";
+
 import {
   Container,
   Button,
@@ -17,7 +21,7 @@ import {
   SubTitle,
 } from "./LaunchScreenStyles";
 
-import { Images, Colors } from "../../constants";
+import { Images, Colors, Metrics } from "../../constants";
 
 import { I18n } from "i18n-js";
 
@@ -33,80 +37,96 @@ const i18n = new I18n(translations);
 
 // Styles
 
-class LaunchScreen extends Component {
-  constructor(props) {
-    super(props);
+function LaunchScreen(props) {
+  const slideDataValues = [
+    {
+      url: Images.onboard1,
+      color: "#0A10BA",
+      title: i18n.t("titleSlider0"),
+      text: i18n.t("textSlider0"),
+    },
+    {
+      url: Images.onboard2,
+      color: "#02023C",
+      title: i18n.t("titleSlider1"),
+      text: i18n.t("textSlider1"),
+    },
+    {
+      url: Images.onboard3,
+      color: "#308800",
+      title: i18n.t("titleSlider2"),
+      text: i18n.t("textSlider2"),
+    },
+  ];
 
-    this.state = {
-      data: [
-        {
-          url: Images.onboard1,
-          color: "#0A10BA",
-          title: i18n.t("titleSlider0"),
-          text: i18n.t("textSlider0"),
-        },
-        {
-          url: Images.onboard2,
-          color: "#02023C",
-          title: i18n.t("titleSlider1"),
-          text: i18n.t("textSlider1"),
-        },
-        {
-          url: Images.onboard3,
-          color: "#308800",
-          title: i18n.t("titleSlider2"),
-          text: i18n.t("textSlider2"),
-        },
-      ],
-      activeSlider: 0,
-      showScreen: false,
-    };
+  const [slideData, setSlideData] = useState(slideDataValues);
+  const [activeSlider, setActiveSlider] = useState(0);
 
-    this.sliderRefTop = React.createRef();
-    this.sliderRefBottom = React.createRef();
-  }
+  const [mode, setMode] = React.useState("horizontal");
+  const [snapDirection, setSnapDirection] = React.useState("left");
+  const [pagingEnabled, setPagingEnabled] = React.useState(true);
+  const [snapEnabled, setSnapEnabled] = React.useState(true);
+  const [loop, setLoop] = React.useState(false);
+  const [autoPlay, setAutoPlay] = React.useState(false);
+  const [autoPlayReverse, setAutoPlayReverse] = React.useState(false);
+  const viewCount = 3;
+  return (
+    <Container color={slideData[activeSlider].color}>
+      <Carousel
+        style={{
+          width: "100%",
+          height: Metrics.screenHeight,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        width={Metrics.screenWidth}
+        height={Metrics.screenHeight}
+        pagingEnabled={pagingEnabled}
+        snapEnabled={snapEnabled}
+        mode={mode}
+        loop={loop}
+        autoPlay={autoPlay}
+        autoPlayReverse={autoPlayReverse}
+        data={slideData}
+        modeConfig={{
+          snapDirection,
+          stackInterval: mode === "vertical-stack" ? 8 : 18,
+        }}
+        onSnapToItem={(index) => setActiveSlider(index)}
+        customConfig={() => ({ type: "positive", viewCount })}
+        renderItem={({ item, index }) => (
+          <View
+            style={{
+              backgroundColor: item.color,
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "space-around",
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: item.color,
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              <SliderTopContainer>
+                <SliderImage image={item.url}></SliderImage>
+              </SliderTopContainer>
+              <Title maxFontSizeMultiplier={1}>{item.title}</Title>
+              <SubTitle maxFontSizeMultiplier={1.0}>{item.text}</SubTitle>
+            </View>
 
-  renderItemSlider(item, index) {
-    const { data, activeSlider } = this.state;
-
-    return (
-      <View>
-        <SliderTopContainer>
-          <SliderImage image={item.url}></SliderImage>
-        </SliderTopContainer>
-        <Title maxFontSizeMultiplier={1}>{item.title}</Title>
-        <SubTitle maxFontSizeMultiplier={1.0}>{item.text}</SubTitle>
-      </View>
-    );
-  }
-
-  snapToNext(index) {
-    this.setState({ activeSlider: index });
-    // this.refs.topSlider.snapToItem(index);
-  }
-  render() {
-    const { data, activeSlider, showScreen } = this.state;
-    return (
-      <Container color={data[activeSlider].color}>
-        {/* <OnboardSlider
-          ref={"topSlider"}
-          images={data}
-          loop
-          firstItem={this.state.activeSlider}
-          renderItem={({ item, index }) => this.renderItemSlider(item, index)}
-          snapAction={index => this.snapToNext(index)}
-        />
-        <SliderPagination
-          sliderRef={this.refs.topSlider}
-          length={data.length}
-          activeSlider={activeSlider}
-        /> */}
-        <Button onPress={() => router.push("tutorial")}>
-          <ButtonText>{i18n.t("buttonSlider")}</ButtonText>
-        </Button>
-      </Container>
-    );
-  }
+            {index === 2 && (
+              <Button onPress={() => router.push("tutorial")}>
+                <ButtonText>{i18n.t("buttonSlider")}</ButtonText>
+              </Button>
+            )}
+          </View>
+        )}
+      />
+    </Container>
+  );
 }
 
 const mapStateToProps = (state) => {

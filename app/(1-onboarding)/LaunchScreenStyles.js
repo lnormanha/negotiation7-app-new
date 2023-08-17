@@ -11,6 +11,7 @@ import { Metrics, Colors, Fonts } from "../../constants";
 export const Container = styled.View`
   flex: 1;
   background-color: ${(props) => props.color};
+  heigth: 100%;
 `;
 
 export const AlignerTop = styled.View`
