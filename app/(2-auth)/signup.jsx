@@ -1,35 +1,21 @@
-import React, { Component } from "react";
+import React from "react";
 import { View } from "react-native";
-import { Header, Button, FacebookButton, GoogleButton } from "../../components";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { useRouter } from "expo-router";
 
-// Add Actions - replace 'Your' with whatever your reducer is called :)
+import { useLocalization } from "@/context/LocalizationProvider";
 import SignUpActions from "../../state/redux/sign-up/SignUpRedux";
 
-import { I18n } from "i18n-js";
+import { Header, Button } from "../../components";
 
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
-
-// Styles
 import {
   Container,
-  Title,
   InputContainer,
   InputLabel,
   Input,
   Box,
-  AlignCenter,
 } from "./SignUpScreenStyles";
-import { useRouter } from "expo-router";
 
 function SignUpScreen({}) {
   const initialState = {
@@ -38,6 +24,7 @@ function SignUpScreen({}) {
     password: "",
   };
   const [state, setState] = useState(initialState);
+  const { getLocaleString } = useLocalization();
   const { back, push } = useRouter();
   const { email, name, password } = state;
 
@@ -57,36 +44,42 @@ function SignUpScreen({}) {
 
   return (
     <Container>
-      <Header title={i18n.t("signUpHeader")} onPressLeft={() => back()} />
+      <Header
+        title={getLocaleString("signUpHeader")}
+        onPressLeft={() => back()}
+      />
       <Box />
       <InputContainer>
-        <InputLabel>{i18n.t("nameLabel")}</InputLabel>
+        <InputLabel>{getLocaleString("nameLabel")}</InputLabel>
         <Input
-          placeholder={i18n.t("namePlaceholder")}
+          placeholder={getLocaleString("namePlaceholder")}
           value={name}
-          onChangeText={(text) => setState({ name: text })}
+          onChangeText={(text) => setState({ ...state, name: text })}
         ></Input>
       </InputContainer>
       <InputContainer>
-        <InputLabel>{i18n.t("emailLabel")}</InputLabel>
+        <InputLabel>{getLocaleString("emailLabel")}</InputLabel>
         <Input
-          placeholder={i18n.t("emailPlaceholder")}
+          placeholder={getLocaleString("emailPlaceholder")}
           value={email}
-          onChangeText={(email) => setState({ email })}
+          onChangeText={(email) => setState({ ...state, email })}
           autoCapitalize="none"
           keyboardType="email-address"
         ></Input>
       </InputContainer>
       <InputContainer>
-        <InputLabel>{i18n.t("passwordLabel")} </InputLabel>
+        <InputLabel>{getLocaleString("passwordLabel")} </InputLabel>
         <Input
-          placeholder={i18n.t("passwordPlaceholder")}
+          placeholder={getLocaleString("passwordPlaceholder")}
           value={password}
-          onChangeText={(password) => setState({ password })}
+          onChangeText={(password) => setState({ ...state, password })}
           secureTextEntry
         ></Input>
       </InputContainer>
-      <Button onPress={() => submit()} title={i18n.t("signUpButton")}></Button>
+      <Button
+        onPress={() => submit()}
+        title={getLocaleString("signUpButton")}
+      ></Button>
       <View style={{ marginBottom: 30 }} />
     </Container>
   );

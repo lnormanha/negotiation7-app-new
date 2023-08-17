@@ -1,16 +1,19 @@
 import React from "react";
-import { Header, TagCard } from "../../components";
-
 import { useDispatch, useSelector } from "react-redux";
 import { View, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
+
+import { useLocalization } from "@/context/LocalizationProvider";
+import { UserSelectors } from "../../state/redux/user/UserRedux";
 import NegotiationsActions, {
   NegotiationsSelectors,
 } from "../../state/redux/negotiations/NegotiationsRedux";
-import LanguageActions, {
-  LanguageSelectors,
-} from "../../state/redux/languages/LanguageRedux";
 
+import { Images } from "../../constants";
+
+import { Header, TagCard } from "../../components";
+import Search from "../../components/SearchBar";
 import {
   Container,
   NegotiationsContainer,
@@ -21,78 +24,39 @@ import {
   NegotiationIcon,
   NegotiationName,
   NegotiationArea,
-  NegotiationInfoRow,
   NegotiationInfo,
-  InfoIcon,
   ImageContainer,
   ImageNegotiation,
   NegotiationTitleImage,
-  DescriptionNegotiation,
-  UnderLineText,
   AddButton,
   AddIcon,
   ViewButton,
   TextButton,
-  SubText,
   SubNegotiationTitleImage,
   BottomMargin,
   BottomContainer,
-  Bar,
-  SubInfoArea,
-  SubRemainingText,
-  ProgressContainer,
-  Progress,
-  ProgressText,
 } from "./HomeScreenStyle";
 
-import negotiations_list from "../../mocks/negotiations.json";
-import { Icons, Images, Colors } from "../../constants";
-import { ScrollView } from "react-native-gesture-handler";
-import Search from "../../components/SearchBar";
-import { UserSelectors } from "../../state/redux/user/UserRedux";
-import { differenceInDays, nextDay } from "date-fns";
-import { SubscriptionSelectors } from "../../state/redux/subscription/SubscriptionRedux";
-import SubscriptionActions from "../../state/redux/subscription/SubscriptionRedux";
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-import { useRouter } from "expo-router";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
-
 function HomeScreen(props: any) {
+  const { getLocaleString, currentLocale, changeLocale } = useLocalization();
+
   const [searchText, setSearchText] = React.useState("");
   const [searchedNegotiations, setSearchedNegotiations] = React.useState([]);
   const [tagNegotiations, setTagNegotiations] = React.useState([]);
   const [selectedTag, setSelectedTag] = React.useState();
-  const [subProgress, setSubProgress] = React.useState<number>(1);
-  const [differenceInDaysSub, setDifferenceInDaysSub] =
-    React.useState<number>(0);
+
+  React.useState<number>(0);
 
   const dispatch = useDispatch();
 
   const negotiations = useSelector(NegotiationsSelectors.getNegotiations);
   const user = useSelector(UserSelectors.getUser);
-  const selectedLanguage = useSelector(LanguageSelectors.getLanguage);
-  const subscription = useSelector(SubscriptionSelectors.getSubscription);
 
   const { push } = useRouter();
 
   let timer;
 
   React.useEffect(() => {
-    AsyncStorage.getItem("language").then((res) => {
-      if (res != null) {
-        dispatch(LanguageActions.setLanguage(res));
-      }
-    });
-
     AsyncStorage.getItem("showTutorial").then((res) => {
       if (res != null) {
         dispatch(NegotiationsActions.setTutorial(JSON.parse(res)));
@@ -100,39 +64,18 @@ function HomeScreen(props: any) {
     });
   }, []);
 
-  React.useEffect(() => {
-    if (user.payload) {
-      dispatch(SubscriptionActions.subscriptionDataRequest(user.payload.id));
-    }
-  }, [user]);
-
-  React.useEffect(() => {
-    if (subscription) {
-      const startDate = new Date();
-      const expiryDate = new Date(subscription.expires_in);
-      const duration = 30;
-
-      const dif = differenceInDays(expiryDate, startDate);
-
-      const progress = (dif / duration) * 100;
-
-      setDifferenceInDaysSub(dif);
-      setSubProgress(progress);
-    }
-  }, [subscription]);
-
   function goToNegotiation(negotiation) {
     dispatch(NegotiationsActions.setCurrent(negotiation));
     dispatch(
       NegotiationsActions.negotiationTopicsRequest({
         id: negotiation.id,
-        language: selectedLanguage,
+        language: currentLocale,
       })
     );
     dispatch(
       NegotiationsActions.negotiationReportRequest({
         id: negotiation.id,
-        language: selectedLanguage,
+        language: currentLocale,
       })
     );
     push("/negotiation");
@@ -253,7 +196,7 @@ function HomeScreen(props: any) {
           />
         );
       } else {
-        return <ListTitle>{i18n.t("noResults")}</ListTitle>;
+        return <ListTitle>{getLocaleString("noResults")}</ListTitle>;
       }
     } else if (tagNegotiations.length > 0) {
       return (
@@ -282,7 +225,7 @@ function HomeScreen(props: any) {
     return (
       <NegotiationsContainer showsVerticalScrollIndicator={false}>
         {verifyHasTags(negotiations.list) && (
-          <ListTitle>{i18n.t("foldersTitle")}</ListTitle>
+          <ListTitle>{getLocaleString("foldersTitle")}</ListTitle>
         )}
         <Tags
           data={negotiations.tags}
@@ -292,7 +235,8 @@ function HomeScreen(props: any) {
           showsHorizontalScrollIndicator={false}
         />
         <ListTitle>
-          {i18n.t("planningsTitle")} - {selectedTag?.name || i18n.t("all")}
+          {getLocaleString("planningsTitle")} -{" "}
+          {selectedTag?.name || getLocaleString("all")}
         </ListTitle>
         {renderNegotiationList()}
         <BottomMargin />
@@ -306,9 +250,9 @@ function HomeScreen(props: any) {
         <ImageNegotiation image={Images.negotiation} />
         <NegotiationTitleImage>
           <SubNegotiationTitleImage>
-            {i18n.t("homeWelcome")}{" "}
+            {getLocaleString("homeWelcome")}{" "}
           </SubNegotiationTitleImage>
-          {i18n.t("appName")}
+          {getLocaleString("appName")}
         </NegotiationTitleImage>
       </ImageContainer>
     );
@@ -324,39 +268,16 @@ function HomeScreen(props: any) {
   return (
     <Container>
       <Header
-        title={i18n.t("appName")}
+        title={getLocaleString("appName")}
         isHome
         onPressProfile={() => push("/profile")}
-        language={selectedLanguage}
+        language={currentLocale}
       />
-      {/* <SubInfoArea hasSubscription={user?.payload?.has_subscription}>
-        <SubRemainingText>
-          {i18n.t("welcomeMessage")} {user.payload?.name.split(" ")[0]}{" "}
-          {user.payload?.name.split(" ")[1]}
-        </SubRemainingText>
 
-        {user?.payload?.has_subscription && (
-          <SubRemainingText>
-            {subscription?.type === "TRIAL"
-              ? i18n.t("trialSubscriptionExpires")
-              : i18n.t("subscriptionExpires")}
-          </SubRemainingText>
-        )}
-        {user?.payload?.has_subscription && (
-          <ProgressContainer>
-            <Progress width={subProgress} />
-            <ProgressText>
-              {subscription?.hasExpired
-                ? i18n.t("expired")
-                : `${differenceInDaysSub} ${i18n.t("days")}`}
-            </ProgressText>
-          </ProgressContainer>
-        )}
-      </SubInfoArea> */}
       <Search
         onSearch={(text) => searchNegotiations(text)}
         value={searchText}
-        placeholder={i18n.t("searchPlaceholder")}
+        placeholder={getLocaleString("searchPlaceholder")}
       />
 
       {negotiations.fetching ? (
@@ -375,11 +296,8 @@ function HomeScreen(props: any) {
       )}
 
       <BottomContainer>
-        <ViewButton
-          onPress={() => push("/create-negotiation")}
-          disabled={!user.payload?.has_subscription}
-        >
-          <TextButton>{i18n.t("createNewNegotiation")}</TextButton>
+        <ViewButton onPress={() => push("/create-negotiation")}>
+          <TextButton>{getLocaleString("createNewNegotiation")}</TextButton>
           <AddButton>
             <AddIcon />
           </AddButton>

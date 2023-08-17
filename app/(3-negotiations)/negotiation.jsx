@@ -1,24 +1,16 @@
-import React, { Component, useEffect, useState } from "react";
-import {
-  FlatList,
-  ScrollView,
-  Alert,
-  ActivityIndicator,
-  View,
-  PermissionsAndroid,
-  Platform,
-} from "react-native";
-import { Header, Modal } from "../../components";
-
+import React, { useEffect, useState } from "react";
+import { FlatList, ScrollView, ActivityIndicator, View } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
-// import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import { useRouter } from "expo-router";
 import * as Sharing from "expo-sharing";
 import * as Print from "expo-print";
 
+import { useLocalization } from "@/context/LocalizationProvider";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 import { mapToHtml } from "../../services/CreatePDFReport";
+
+import { Header, Modal } from "../../components";
 
 import {
   Container,
@@ -39,34 +31,13 @@ import {
   OptionArea,
   OptionButton,
   Icon,
-  PremiumContainer,
-  PremiumImage,
-  PremiumTitle,
-  PremiumText,
-  PremiumArrowIcon,
-  TitlePremiumContainer,
-  ImagePremiumContainer,
   TopicIcon,
-  TutorialButtonContainer,
   TutorialButton,
   TutorialLabel,
   NegotiationProgressContainer,
   NegotiationProgressBar,
 } from "./NegotiationScreenStyles";
 import { Icons, Colors } from "../../constants";
-
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-import { useRouter } from "expo-router";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
 
 function NegotiationScreen(props) {
   const initialState = {
@@ -85,8 +56,9 @@ function NegotiationScreen(props) {
   };
 
   const [state, setState] = useState(initialState);
+  const { getLocaleString, currentLocale } = useLocalization();
 
-  const { negotiations, navigation, user, subscription, language } = props;
+  const { negotiations, user, subscription, language } = props;
 
   const { payload } = user;
   const { subscription_data } = subscription;
@@ -148,34 +120,6 @@ function NegotiationScreen(props) {
     await Sharing.shareAsync(filePath, { UTI: ".pdf", mimeType: type });
   }
 
-  async function sharePDFWithAndroid(pdfPath, type) {
-    Sharing.shareAsync(pdfPath);
-  }
-
-  async function requestStoragePermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: "Permissão para armazenamento externo",
-          message:
-            "Negociação 7.0 precisa acessar seu armazenameto " +
-            "para salvar o relatório.",
-          buttonNeutral: "Perguntar depois",
-          buttonNegative: "Cancelar",
-          buttonPositive: "OK",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        sharePDF();
-      } else {
-        console.log("Storage permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
-
   function getNegotiationProgress() {
     const totalSum = negotiations.topics?.reduce((accum, current) => {
       return accum + current.qtd_questions;
@@ -202,8 +146,9 @@ function NegotiationScreen(props) {
               : ""}
           </TopicTitle>
           <TopicQtyQuestion>
-            {item.qtd_answer} {i18n.t("negotiationTopicQuestionsOf")}{" "}
-            {item.qtd_questions} {i18n.t("negotiationTopicQuestionsText")}
+            {item.qtd_answer} {getLocaleString("negotiationTopicQuestionsOf")}{" "}
+            {item.qtd_questions}{" "}
+            {getLocaleString("negotiationTopicQuestionsText")}
           </TopicQtyQuestion>
         </TopicInfoContent>
         <Arrow />
@@ -226,7 +171,7 @@ function NegotiationScreen(props) {
   }
 
   function getTime(date) {
-    if (props.language.selected == "en") {
+    if (currentLocale == "en") {
       return new Date(date).toLocaleTimeString("en-US");
     } else {
       return new Date(date).toLocaleTimeString("pt-BR");
@@ -236,7 +181,7 @@ function NegotiationScreen(props) {
   return (
     <Container>
       <Header
-        title={i18n.t("negotiationHeader")}
+        title={getLocaleString("negotiationHeader")}
         isNegotiation
         onPressLeft={() => back()}
         onPressReport={() => goToReport()}
@@ -270,7 +215,7 @@ function NegotiationScreen(props) {
                 <InfoIcon image={Icons.response} />
                 <InfoIconsText>
                   {current?.qtd_answers || "0"}{" "}
-                  {i18n.t("negotiationResponsesLabel")}
+                  {getLocaleString("negotiationResponsesLabel")}
                 </InfoIconsText>
               </InfoIconsRow>
               <InfoIconsRow>
@@ -315,24 +260,11 @@ function NegotiationScreen(props) {
               </OptionButton>
             </OptionArea>
           </Content>
-          {/* {!subscription_data ||
-            (subscription_data?.type === "TRIAL" && (
-              <PremiumContainer onPress={() => push("SubscriptionScreen")}>
-                <PremiumImage />
-                <TitlePremiumContainer>
-                  <PremiumTitle>
-                    {i18n.t("negotiationPremiumTitle")}
-                  </PremiumTitle>
-                  <PremiumText>{i18n.t("negotiationPremiumText")}</PremiumText>
-                </TitlePremiumContainer>
-                <PremiumArrowIcon />
-              </PremiumContainer>
-            ))} */}
         </ScrollView>
       )}
       <Modal
-        title={i18n.t("deleteNegotiationTitle")}
-        message={i18n.t("deleteNegotiationMessage")}
+        title={getLocaleString("deleteNegotiationTitle")}
+        message={getLocaleString("deleteNegotiationMessage")}
         onCancel={() => openModal()}
         onConfirm={() => removeNegotiation()}
         isVisible={state.isModalVisible}

@@ -20,6 +20,7 @@ import { Provider } from "react-redux";
 import createStore from "../state/redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Route } from "expo-router/build/Route";
+import { LocalizationProvider } from "@/context/LocalizationProvider";
 
 const store = createStore();
 
@@ -81,20 +82,22 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen
-            name="(1-onboarding)"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="(2-auth)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="(3-negotiations)"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="(4-profile)" options={{ headerShown: false }} />
+        <LocalizationProvider>
+          <Stack>
+            <Stack.Screen
+              name="(1-onboarding)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="(2-auth)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(3-negotiations)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="(4-profile)" options={{ headerShown: false }} />
 
-          <Stack.Screen name="(5-general)" options={{ headerShown: false }} />
-        </Stack>
+            <Stack.Screen name="(5-general)" options={{ headerShown: false }} />
+          </Stack>
+        </LocalizationProvider>
       </ThemeProvider>
     </Provider>
   );

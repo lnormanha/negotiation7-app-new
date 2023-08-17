@@ -4,17 +4,7 @@ import WebView from "react-native-webview";
 import { connect } from "react-redux";
 import { router } from "expo-router";
 
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
+import { useLocalization } from "@/context/LocalizationProvider";
 
 // Styles
 import {
@@ -28,47 +18,48 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Metrics } from "../../constants";
 import { View } from "react-native";
 
-class TutorialScreen extends Component {
-  goNext() {
+function TutorialScreen(props) {
+  const { getLocaleString, currentLocale } = useLocalization();
+
+  function goNext() {
     router.replace("login");
-    //   this.props.navigation.navigate("LoginScreen");
   }
-  render() {
-    // const { navigation, language } = this.props;
-    return (
-      <Container>
-        <Header title="Tutorial" onPressLeft={() => router.back()} />
 
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            height: 900,
+  return (
+    <Container>
+      <Header title="Tutorial" onPressLeft={() => router.back()} />
+
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          height: 900,
+        }}
+      >
+        <Title>{getLocaleString("tutorialTitle")}</Title>
+        <WebView
+          style={{ flex: 1, width: Metrics.screenWidth, height: 900 }}
+          source={{
+            uri:
+              currentLocale === "en"
+                ? "https://www.youtube.com/embed/yPQiwGF8G0w"
+                : "https://www.youtube.com/embed/wsFF4gqd9fA",
           }}
-        >
-          <Title>{i18n.t("tutorialTitle")}</Title>
-          <WebView
-            style={{ flex: 1, width: Metrics.screenWidth, height: 900 }}
-            source={{
-              uri: "https://www.youtube.com/embed/yPQiwGF8G0w",
-            }}
-            // videoId={language.selected == 'en' ? 'yPQiwGF8G0w' : 'wsFF4gqd9fA'}
-          />
-          <Description>{i18n.t("tutorialText")}</Description>
-          <TopMargin />
-        </ScrollView>
+        />
+        <Description>{getLocaleString("tutorialText")}</Description>
+        <TopMargin />
+      </ScrollView>
 
-        <BottomContainer>
-          <Button
-            title={i18n.t("topicQuestionContinueButton")}
-            showIcon
-            spaced_icons
-            onPress={() => this.goNext()}
-            bottomMargin
-          />
-        </BottomContainer>
-      </Container>
-    );
-  }
+      <BottomContainer>
+        <Button
+          title={getLocaleString("topicQuestionContinueButton")}
+          showIcon
+          spaced_icons
+          onPress={() => goNext()}
+          bottomMargin
+        />
+      </BottomContainer>
+    </Container>
+  );
 }
 
 const mapStateToProps = (state) => {

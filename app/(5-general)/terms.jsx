@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { ScrollView } from "react-native";
 import { Header } from "../../components";
-import { connect } from "react-redux";
-import { Stack, Link, useRouter } from "expo-router";
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+import { useRouter } from "expo-router";
+
+import { useLocalization } from "@/context/LocalizationProvider";
 
 // Styles
 import {
@@ -14,19 +13,9 @@ import {
   Separator,
 } from "./TermsScreenStyles";
 
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
-
 export default function TermsScreen() {
+  const { getLocaleString, currentLocale } = useLocalization();
+
   function renderBRContent() {
     return (
       <ScrollView>
@@ -632,30 +621,11 @@ export default function TermsScreen() {
       </ScrollView>
     );
   }
-
-  // const { language } = this.props;
-
   const { back } = useRouter();
   return (
-    <>
-      {/* <Stack.Screen options={{ title: "Terms", headerShown: false }} /> */}
-      <Container>
-        <Header title={i18n.t("termsHeader")} onPressLeft={back} />
-        {renderENContent()}
-        {/* {language.selected == "en"
-          ? this.renderENContent()
-          : this.renderBRContent()} */}
-      </Container>
-    </>
+    <Container>
+      <Header title={getLocaleString("termsHeader")} onPressLeft={back} />
+      {currentLocale == "en" ? renderENContent() : renderBRContent()}
+    </Container>
   );
 }
-
-// const mapStateToProps = state => {
-//   return { language: state.language };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return {};
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(TermsScreen);

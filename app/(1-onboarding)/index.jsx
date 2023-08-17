@@ -3,10 +3,10 @@ import { View } from "react-native";
 import { Link, router, useRouter } from "expo-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
-// import { FadeInRight } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { useLocalization } from "@/context/LocalizationProvider";
 import NegotiationsActions, {
   NegotiationsSelectors,
 } from "../../state/redux/negotiations/NegotiationsRedux";
@@ -28,40 +28,27 @@ import {
 
 import { Images, Colors, Metrics } from "../../constants";
 
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
-
-// Styles
-
 function LaunchScreen(props) {
+  const { getLocaleString } = useLocalization();
+
   const slideDataValues = [
     {
       url: Images.onboard1,
       color: "#0A10BA",
-      title: i18n.t("titleSlider0"),
-      text: i18n.t("textSlider0"),
+      title: getLocaleString("titleSlider0"),
+      text: getLocaleString("textSlider0"),
     },
     {
       url: Images.onboard2,
       color: "#02023C",
-      title: i18n.t("titleSlider1"),
-      text: i18n.t("textSlider1"),
+      title: getLocaleString("titleSlider1"),
+      text: getLocaleString("textSlider1"),
     },
     {
       url: Images.onboard3,
       color: "#308800",
-      title: i18n.t("titleSlider2"),
-      text: i18n.t("textSlider2"),
+      title: getLocaleString("titleSlider2"),
+      text: getLocaleString("textSlider2"),
     },
   ];
 
@@ -144,7 +131,7 @@ function LaunchScreen(props) {
 
             {index === 2 && (
               <Button onPress={() => router.push("tutorial")}>
-                <ButtonText>{i18n.t("buttonSlider")}</ButtonText>
+                <ButtonText>{getLocaleString("buttonSlider")}</ButtonText>
               </Button>
             )}
           </View>
