@@ -25,6 +25,8 @@ import {
   BottomContainer,
 } from "./TutorialScreenStyles";
 import { ScrollView } from "react-native-gesture-handler";
+import { Metrics } from "../../constants";
+import { View } from "react-native";
 
 class TutorialScreen extends Component {
   goNext() {
@@ -36,17 +38,25 @@ class TutorialScreen extends Component {
     return (
       <Container>
         <Header title="Tutorial" onPressLeft={() => router.back()} />
-        <ScrollView>
-          {/* <WebView
-            javaScriptEnabled={true}
-            domStorageEnabled={true}
-            source={{ uri: "https://www.youtube.com/embed/yPQiwGF8G0w" }}
-            // videoId={language.selected == 'en' ? 'yPQiwGF8G0w' : 'wsFF4gqd9fA'}
-          /> */}
+
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            height: 900,
+          }}
+        >
           <Title>{i18n.t("tutorialTitle")}</Title>
+          <WebView
+            style={{ flex: 1, width: Metrics.screenWidth, height: 900 }}
+            source={{
+              uri: "https://www.youtube.com/embed/yPQiwGF8G0w",
+            }}
+            // videoId={language.selected == 'en' ? 'yPQiwGF8G0w' : 'wsFF4gqd9fA'}
+          />
           <Description>{i18n.t("tutorialText")}</Description>
           <TopMargin />
         </ScrollView>
+
         <BottomContainer>
           <Button
             title={i18n.t("topicQuestionContinueButton")}
