@@ -14,7 +14,7 @@ import { bindActionCreators } from "redux";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import * as Sharing from "expo-sharing";
-
+import * as Print from "expo-print";
 import { mapToHtml } from "../../services/CreatePDFReport";
 
 import { I18n } from "i18n-js";
@@ -81,24 +81,21 @@ function ReportScreen(props) {
   const [state, setState] = useState(initialState);
   const { push, back, replace } = useRouter();
 
-  async function createPDF(showAlert) {
+  async function createPDF() {
     let data = {
       report,
       name: user.payload.name,
       locale: language.selected,
     };
-    let options = {
-      height: 842,
-      width: 595,
-      html: mapToHtml(data),
-      fileName: `NEGOTIATION7-Report-${current.title}`,
-      directory: "Documents",
-    };
-    // let file = await RNHTMLtoPDF.convert(options);
-    setState({ ...state, filePath: file.filePath });
-    if (showAlert) {
-      Alert.alert(`PDF Salvo com sucesso em: ${file.filePath}`);
-    }
+
+    const html = mapToHtml(data);
+
+    console.log({ html });
+
+    const { uri } = await Print.printToFileAsync({ html });
+
+    setState({ ...state, filePath: uri });
+    console.log("PDF Salvo com sucesso em: ", uri);
   }
 
   async function sharePDF() {
@@ -107,21 +104,7 @@ function ReportScreen(props) {
     let filePath = `file://${state.filePath}`;
     let type = "application/pdf";
 
-    if (Platform.OS == "ios") {
-      await Sharing.shareAsync(filePath);
-      Share.open({
-        url: filePath,
-        mimeType: type,
-      })
-        .then((resShare) => {
-          console.log({ resShare });
-        })
-        .catch((err) => {
-          err && console.log({ err });
-        });
-    } else {
-      sharePDFWithAndroid(filePath, type);
-    }
+    await Sharing.shareAsync(filePath, { UTI: ".pdf", mimeType: type });
   }
 
   async function sharePDFWithAndroid(pdfPath, type) {
