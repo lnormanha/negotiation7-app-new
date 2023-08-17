@@ -24,14 +24,13 @@ import {
   LearnMore,
   LearnMoreLink,
 } from "./AboutScreenStyles";
+import { useRouter } from "expo-router";
 
 function AboutScreen(props) {
+  const { back } = useRouter();
   return (
     <Container>
-      <Header
-        title={i18n.t("aboutHeader")}
-        onPressLeft={() => this.props.navigation.goBack()}
-      />
+      <Header title={i18n.t("aboutHeader")} onPressLeft={() => back()} />
       <ScrollView>
         <Title>{i18n.t("aboutHeader")}</Title>
         <About>{i18n.t("aboutText")}</About>

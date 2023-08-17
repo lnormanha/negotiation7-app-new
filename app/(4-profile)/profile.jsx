@@ -90,7 +90,7 @@ function ProfileScreen(props) {
             </InfoContent>
           )}
         </TopContainer>
-
+        {/* 
         <SectionTitle>{i18n.t("subscriptionHeader")}</SectionTitle>
         {subscription?.subscription_data && (
           <SubType>
@@ -106,7 +106,7 @@ function ProfileScreen(props) {
             {subscription?.subscription_data?.type === "TRIAL" &&
               `${i18n.t("trial")}`}
           </SubType>
-        )}
+        )} */}
 
         {payload?.has_subscription && (
           <ProgressContainer>
@@ -142,7 +142,7 @@ function ProfileScreen(props) {
 
         <SectionTitle>{i18n.t("settings")}</SectionTitle>
 
-        <OptionItem onPress={() => push("language")}>
+        <OptionItem onPress={() => push("languages")}>
           <OptionLabel>{i18n.t("languageLabel")}</OptionLabel>
           <OptionIcon />
         </OptionItem>
