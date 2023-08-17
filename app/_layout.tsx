@@ -5,7 +5,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Redirect, SplashScreen, Stack, usePathname } from "expo-router";
+import { Redirect, SplashScreen, Stack } from "expo-router";
 import * as Localization from "expo-localization";
 
 import { I18n } from "i18n-js";
@@ -102,6 +102,12 @@ function RootLayoutNav() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="(2-auth)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(3-negotiations)"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="(4-profile)" options={{ headerShown: false }} />
+
           <Stack.Screen name="(5-general)" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>

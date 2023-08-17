@@ -58,7 +58,7 @@ export const Point = styled.View`
   background-color: ${Colors.white};
   border-width: 1px;
   border-color: #1f394e;
-  border-radius: ${10 / 2};
+  border-radius: ${10 / 2}px;
   background-color: ${(props) =>
     props.completed ? "#22BC28" : props.selected ? "#1f394e" : "#FFF"};
 `;
@@ -105,7 +105,7 @@ export const FlexAlign = styled.View`
 
 export const ButtonRow = styled.View`
   flex-direction: row;
-  width: ${Metrics.screenWidth - 30};
+  width: ${Metrics.screenWidth - 30}px;
   align-items: center;
   justify-content: space-between;
   align-self: center;
@@ -119,7 +119,8 @@ export const BottomContainer = styled.View`
   height: 120px;
   width: ${Metrics.screenWidth}px;
   background-color: ${Colors.background};
-  ${(props) => props.showShadow && `box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2)`}
+  ${(props) =>
+    props.showShadow && `box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2)`};
   align-items: center;
   justify-content: center;
 `;

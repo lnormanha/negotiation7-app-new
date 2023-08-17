@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 import {
   Colors,
   Metrics,
@@ -6,7 +6,7 @@ import {
   ApplicationStyles,
   Icons,
   Images,
-} from '../../constants';
+} from "../../constants";
 
 export const Container = styled.View`
   ${ApplicationStyles.screen.container};
@@ -43,14 +43,23 @@ export const Text = styled.Text`
   text-align: center;
 `;
 
-export const NegotiationProgress = styled.View.attrs(props => ({
-  animated: true,
-  progress: props.progress,
-  color: props.progress == 1 ? '#22BC28' : '#0A10BA',
-  unfilledColor: '#E0E3E5',
-  borderWidth: 0,
-  width: Metrics.screenWidth - 100,
-}))``;
+export const NegotiationProgressContainer = styled.View`
+  width: ${Metrics.screenWidth - 50};
+  background-color: #fff;
+  border-radius: 10px;
+  height: 10px;
+  border-color: #000;
+  border-width: 1px;
+  overflow: hidden;
+`;
+
+export const NegotiationProgressBar = styled.View`
+  width: ${(props) => `${props.progress}%` || "0%"};
+  background-color: ${(props) =>
+    props.progress == 100 ? "#22BC28" : "#0A10BA"};
+  border-radius: 2px;
+  height: 10px;
+`;
 
 export const TopicContainer = styled.TouchableOpacity`
   width: ${Metrics.screenWidth - 50};
@@ -61,7 +70,7 @@ export const TopicContainer = styled.TouchableOpacity`
   align-items: center;
   margin: 1px 0px 1px 0px;
   align-self: center;
-  border-bottom-width: ${props => (props.border ? 2 : 0)};
+  border-bottom-width: ${(props) => (props.border ? 2 : 0)};
   border-color: #f6f6f6;
 `;
 
@@ -70,7 +79,7 @@ export const TopicInfoContent = styled.View`
   width: 210px;
 `;
 
-export const TopicIcon = styled.Image.attrs(props => ({
+export const TopicIcon = styled.Image.attrs((props) => ({
   source: props.icon,
 }))`
   width: 40px;
@@ -106,9 +115,9 @@ export const ArrowArea = styled.View`
   box-shadow: 0px 10px 20px rgba(31, 57, 78, 0.16);
 `;
 
-export const Arrow = styled.Image.attrs(props => ({
+export const Arrow = styled.Image.attrs((props) => ({
   source: Icons.rightArrow,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }))`
   width: 20px;
   height: 18px;
@@ -137,9 +146,9 @@ export const InfoIconsText = styled.Text`
   color: #1f394e80;
 `;
 
-export const InfoIcon = styled.Image.attrs(props => ({
+export const InfoIcon = styled.Image.attrs((props) => ({
   source: props.image,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }))`
   width: 15px;
   height: 20px;
@@ -183,7 +192,7 @@ export const OptionArea = styled.View`
   margin-bottom: 20px;
 `;
 export const OptionButton = styled.TouchableOpacity`
-  background-color: ${props => (props.red ? Colors.fire : '#0A10BA')};
+  background-color: ${(props) => (props.red ? Colors.fire : "#0A10BA")};
   width: 71px;
   height: 71px;
   border-radius: 16px;
@@ -192,9 +201,9 @@ export const OptionButton = styled.TouchableOpacity`
   margin: 0px 10px;
 `;
 
-export const Icon = styled.Image.attrs(props => ({
+export const Icon = styled.Image.attrs((props) => ({
   source: props.icon,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }))`
   width: 34px;
   height: 34px;
@@ -209,9 +218,9 @@ export const PremiumContainer = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const PremiumImage = styled.Image.attrs(props => ({
+export const PremiumImage = styled.Image.attrs((props) => ({
   source: Images.success,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }))`
   width: 92px;
   height: 92px;
@@ -237,9 +246,9 @@ export const PremiumText = styled.Text`
 export const IconContainer = styled.View`
   margin-left: 24px;
 `;
-export const PremiumArrowIcon = styled.Image.attrs(props => ({
+export const PremiumArrowIcon = styled.Image.attrs((props) => ({
   source: Icons.rightArrow,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }))`
   width: 32px;
   height: 24px;

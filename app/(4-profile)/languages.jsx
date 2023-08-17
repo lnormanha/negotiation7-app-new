@@ -24,14 +24,15 @@ import {
   Text,
   LanguageItem,
   LanguageLabel,
-  CheckIcon
+  CheckIcon,
 } from "./LanguageScreenStyles";
+import { useRouter } from "expo-router";
 
-class LanguageScreen extends Component {
-  constructor(props) {
-    super(props);
-    // startLocalizeListener("change", this.handleLocalizationChange);
-  }
+function LanguageScreen(props) {
+  // constructor(props) {
+  //   super(props);
+  //   // startLocalizeListener("change", this.handleLocalizationChange);
+  // }
 
   // componentWillUnmount() {
   //   stopLocalizeListener("change", this.handleLocalizationChange);
@@ -43,15 +44,12 @@ class LanguageScreen extends Component {
   //   this.forceUpdate();
   // };
 
-  render() {
-    const { language } = this.props;
-    return (
-      <Container>
-        <Header
-          title={i18n.t("languageHeader")}
-          onPressLeft={() => this.props.navigation.goBack()}
-        />
-        {/* <LanguageItem onPress={() => this.handleLocalizationChange("en")}>
+  const { back } = useRouter();
+
+  return (
+    <Container>
+      <Header title={i18n.t("languageHeader")} onPressLeft={() => back()} />
+      {/* <LanguageItem onPress={() => this.handleLocalizationChange("en")}>
           <LanguageLabel>{i18n.t("english")}</LanguageLabel>
           {language.selected == "en" && <CheckIcon />}
         </LanguageItem>
@@ -59,22 +57,18 @@ class LanguageScreen extends Component {
           <LanguageLabel>{i18n.t("portuguese")}</LanguageLabel>
           {language.selected == "pt" && <CheckIcon />}
         </LanguageItem> */}
-      </Container>
-    );
-  }
+    </Container>
+  );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { language: state.language };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   const { setLanguage } = LanguageActions;
 
   return bindActionCreators({ setLanguage }, dispatch);
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LanguageScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageScreen);

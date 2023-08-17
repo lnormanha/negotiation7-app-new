@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component, useState } from "react";
 import {
   View,
   FlatList,
@@ -6,17 +6,16 @@ import {
   PermissionsAndroid,
   Platform,
   Alert,
-} from 'react-native';
-import {Header} from '../../components';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+} from "react-native";
+import { Header } from "../../components";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import NegotiationsActions from '../../state/redux/negotiations//NegotiationsRedux';
+import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import * as Sharing from 'expo-sharing';
+import * as Sharing from "expo-sharing";
 
-import {mapToHtml} from '../../services//CreatePDFReport';
-
+import { mapToHtml } from "../../services/CreatePDFReport";
 
 import { I18n } from "i18n-js";
 
@@ -55,30 +54,34 @@ import {
   TradeCoinQuestionAnswer,
   RemoveCoinLabel,
   RemoveCoinButton,
-} from './ReportScreenStyles';
-import {Icons} from '../../constants';
-import {ScrollView} from 'react-native-gesture-handler';
+} from "./ReportScreenStyles";
+import { Icons } from "../../constants";
+import { ScrollView } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 
-class ReportScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      icons: [
-        Icons.header_neg,
-        Icons.object,
-        Icons.objective,
-        Icons.interests,
-        Icons.macna,
-        Icons.trade_coin,
-        Icons.neg_field,
-        Icons.questions,
-      ],
-    };
-  }
+function ReportScreen(props) {
+  const { negotiations, user, language } = props;
+  const { fetching, current, report } = negotiations;
+  const { payload } = user;
 
-  async createPDF(showAlert) {
-    const {negotiations, user, language} = this.props;
-    const {current, report} = negotiations;
+  const initialState = {
+    icons: [
+      Icons.header_neg,
+      Icons.object,
+      Icons.objective,
+      Icons.interests,
+      Icons.macna,
+      Icons.trade_coin,
+      Icons.neg_field,
+      Icons.questions,
+    ],
+    filePath: "",
+  };
+
+  const [state, setState] = useState(initialState);
+  const { push, back, replace } = useRouter();
+
+  async function createPDF(showAlert) {
     let data = {
       report,
       name: user.payload.name,
@@ -89,161 +92,155 @@ class ReportScreen extends Component {
       width: 595,
       html: mapToHtml(data),
       fileName: `NEGOTIATION7-Report-${current.title}`,
-      directory: 'Documents',
+      directory: "Documents",
     };
     // let file = await RNHTMLtoPDF.convert(options);
-    this.setState({filePath: file.filePath});
+    setState({ ...state, filePath: file.filePath });
     if (showAlert) {
       Alert.alert(`PDF Salvo com sucesso em: ${file.filePath}`);
     }
   }
 
-  async sharePDF() {
-    await this.createPDF();
+  async function sharePDF() {
+    await createPDF();
 
-    let filePath = `file://${this.state.filePath}`;
-    let type = 'application/pdf';
+    let filePath = `file://${state.filePath}`;
+    let type = "application/pdf";
 
-    if (Platform.OS == 'ios') {
-      await Sharing.shareAsync(filePath)
+    if (Platform.OS == "ios") {
+      await Sharing.shareAsync(filePath);
       Share.open({
         url: filePath,
         mimeType: type,
       })
-        .then(resShare => {
-          console.log({resShare});
+        .then((resShare) => {
+          console.log({ resShare });
         })
-        .catch(err => {
-          err && console.log({err});
+        .catch((err) => {
+          err && console.log({ err });
         });
     } else {
-      this.sharePDFWithAndroid(filePath, type);
+      sharePDFWithAndroid(filePath, type);
     }
   }
 
-  async sharePDFWithAndroid(pdfPath, type) {
+  async function sharePDFWithAndroid(pdfPath, type) {
     Sharing.shareAsync(pdfPath);
   }
 
-  async requestStoragePermissionCreate() {
+  async function requestStoragePermissionCreate() {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-          title: 'Permissão para armazenamento externo',
+          title: "Permissão para armazenamento externo",
           message:
-            'Negociação 7.0 precisa acessar seu armazenameto ' +
-            'para salvar o relatório.',
-          buttonNeutral: 'Perguntar depois',
-          buttonNegative: 'Cancelar',
-          buttonPositive: 'OK',
-        },
+            "Negociação 7.0 precisa acessar seu armazenameto " +
+            "para salvar o relatório.",
+          buttonNeutral: "Perguntar depois",
+          buttonNegative: "Cancelar",
+          buttonPositive: "OK",
+        }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        this.createPDF(true);
+        createPDF(true);
       } else {
-        console.log('Storage permission denied');
+        console.log("Storage permission denied");
       }
     } catch (err) {
       console.warn(err);
     }
   }
 
-  async requestStoragePermissionShare() {
+  async function requestStoragePermissionShare() {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-          title: 'Permissão para armazenamento externo',
+          title: "Permissão para armazenamento externo",
           message:
-            'Negociação 7.0 precisa acessar seu armazenameto ' +
-            'para salvar o relatório.',
-          buttonNeutral: 'Perguntar depois',
-          buttonNegative: 'Cancelar',
-          buttonPositive: 'OK',
-        },
+            "Negociação 7.0 precisa acessar seu armazenameto " +
+            "para salvar o relatório.",
+          buttonNeutral: "Perguntar depois",
+          buttonNegative: "Cancelar",
+          buttonPositive: "OK",
+        }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        this.sharePDF();
+        sharePDF();
       } else {
-        console.log('Storage permission denied');
+        console.log("Storage permission denied");
       }
     } catch (err) {
       console.warn(err);
     }
   }
 
-  goToQuestions(topic) {
-    this.props.negotiationTopicQuestionsRequest({
+  function goToQuestions(topic) {
+    props.negotiationTopicQuestionsRequest({
       id: topic.id,
-      language: this.props.language.selected,
+      language: props.language.selected,
     });
-    this.props.setCurrentTopic(topic);
-    this.props.navigation.navigate('TopicScreen');
+    props.setCurrentTopic(topic);
+    replace("/topic");
   }
 
-  removeCoin(coin) {
-    const {negotiations, user} = this.props;
-    const {current, report} = negotiations;
+  function removeCoin(coin) {
     const payload = {
       id: current.id,
       coin_id: coin.id,
     };
 
-    this.props.negotiationCoinRemoveRequest(payload);
+    props.negotiationCoinRemoveRequest(payload);
   }
 
-  renderItem(item, index) {
-    const {negotiations} = this.props;
+  function renderItem(item, index) {
     if (index < 7) {
       if (index != 5) {
         if (index != 0 && index != 1) {
-          return this.renderReportTopic(item, index);
+          return renderReportTopic(item, index);
         }
       } else {
-        return this.renderReportCoin(item, index);
+        return renderReportCoin(item, index);
       }
     } else {
-      return this.renderReportBottom(item, index);
+      return renderReportBottom(item, index);
     }
   }
 
-  renderReportHeader() {
-    const {negotiations} = this.props;
-    const {report} = negotiations;
-
+  function renderReportHeader() {
     return (
       <FlatList
         data={report}
-        renderItem={({item, index}) => this.renderReportHeaderItem(item, index)}
+        renderItem={({ item, index }) => renderReportHeaderItem(item, index)}
       />
     );
   }
 
-  renderReportHeaderItem(item, index) {
+  function renderReportHeaderItem(item, index) {
     if (index < 2) {
       if (index == 0) {
         return (
           <View>
             <TopMargin />
-            <InfoLabel>{i18n.t('clientLabel')}</InfoLabel>
+            <InfoLabel>{i18n.t("clientLabel")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[0].answer?.answer || i18n.t('noResponse')}
+              {item.questions[0].answer?.answer || i18n.t("noResponse")}
             </InfoAnswer>
             <TopMargin />
-            <InfoLabel>{i18n.t('negotiationPlace')}</InfoLabel>
+            <InfoLabel>{i18n.t("negotiationPlace")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[1].answer?.answer || i18n.t('noResponse')}
+              {item.questions[1].answer?.answer || i18n.t("noResponse")}
             </InfoAnswer>
             <TopMargin />
-            <InfoLabel>{i18n.t('negotiationDate')}</InfoLabel>
+            <InfoLabel>{i18n.t("negotiationDate")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[2].answer?.answer || i18n.t('noResponse')}
+              {item.questions[2].answer?.answer || i18n.t("noResponse")}
             </InfoAnswer>
             <TopMargin />
-            <InfoLabel>{i18n.t('negotiationTime')}</InfoLabel>
+            <InfoLabel>{i18n.t("negotiationTime")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[3].answer?.answer || i18n.t('noResponse')}
+              {item.questions[3].answer?.answer || i18n.t("noResponse")}
             </InfoAnswer>
             <TopMargin />
           </View>
@@ -251,9 +248,9 @@ class ReportScreen extends Component {
       } else {
         return (
           <View>
-            <InfoLabel>{i18n.t('objectNegotiationLabel')}</InfoLabel>
+            <InfoLabel>{i18n.t("objectNegotiationLabel")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[0].answer?.answer || i18n.t('noResponse')}
+              {item.questions[0].answer?.answer || i18n.t("noResponse")}
             </InfoAnswer>
             <TopMargin />
           </View>
@@ -262,38 +259,38 @@ class ReportScreen extends Component {
     }
   }
 
-  renderReportTopic(item, index) {
-    const {negotiations} = this.props;
+  function renderReportTopic(item, index) {
     return (
       <View>
         <TopicAnswersContainer>
-          <TopicHeader onPress={() => this.goToQuestions(item)}>
-            <TopicHeaderIcon icon={this.state.icons[index]} />
+          <TopicHeader onPress={() => goToQuestions(item)}>
+            <TopicHeaderIcon icon={state.icons[index]} />
             <TopicHeaderInfo>
               <TopicHeaderTitle>{item.name}</TopicHeaderTitle>
               <TopicHeaderQtyQuestion>
-                {negotiations.topics[index].qtd_answer}{' '}
-                {i18n.t('negotiationTopicQuestionsOf')}{' '}
-                {negotiations.topics[index].qtd_questions}{' '}
-                {i18n.t('negotiationTopicQuestionsText')}
+                {negotiations.topics[index].qtd_answer}{" "}
+                {i18n.t("negotiationTopicQuestionsOf")}{" "}
+                {negotiations.topics[index].qtd_questions}{" "}
+                {i18n.t("negotiationTopicQuestionsText")}
               </TopicHeaderQtyQuestion>
             </TopicHeaderInfo>
           </TopicHeader>
           <TopicAnswersHeaders>
             <TopicAnswerHeader leftPos>
-              <TopicAnswerTitle>{i18n.t('oursLabel')}</TopicAnswerTitle>
+              <TopicAnswerTitle>{i18n.t("oursLabel")}</TopicAnswerTitle>
             </TopicAnswerHeader>
             <TopicAnswerHeader rightPos>
-              <TopicAnswerTitle>{i18n.t('theirsLabel')}</TopicAnswerTitle>
+              <TopicAnswerTitle>{i18n.t("theirsLabel")}</TopicAnswerTitle>
             </TopicAnswerHeader>
           </TopicAnswersHeaders>
           {item.questions.map((question, qindex) => {
             return (
               <TopicAnswerContainer
                 leftPos={qindex == 0}
-                rightPos={qindex == 1}>
+                rightPos={qindex == 1}
+              >
                 <TopicAnswerText>
-                  {question?.answer?.answer || i18n.t('noResponse')}
+                  {question?.answer?.answer || i18n.t("noResponse")}
                 </TopicAnswerText>
               </TopicAnswerContainer>
             );
@@ -303,37 +300,36 @@ class ReportScreen extends Component {
     );
   }
 
-  renderReportCoin(item, index) {
-    const {negotiations, user} = this.props;
+  function renderReportCoin(item, index) {
     return (
       <View>
         <TopicAnswersContainer>
-          <TopicHeader onPress={() => this.goToQuestions(item)}>
-            <TopicHeaderIcon icon={this.state.icons[index]} />
+          <TopicHeader onPress={() => goToQuestions(item)}>
+            <TopicHeaderIcon icon={state.icons[index]} />
             <TopicHeaderInfo>
               <TopicHeaderTitle>{item.name}</TopicHeaderTitle>
               <TopicHeaderQtyQuestion>
-                {negotiations.topics[index].qtd_answer}{' '}
-                {i18n.t('negotiationTopicQuestionsOf')}{' '}
-                {negotiations.topics[index].qtd_questions}{' '}
-                {i18n.t('negotiationTopicQuestionsText')}
+                {negotiations.topics[index].qtd_answer}{" "}
+                {i18n.t("negotiationTopicQuestionsOf")}{" "}
+                {negotiations.topics[index].qtd_questions}{" "}
+                {i18n.t("negotiationTopicQuestionsText")}
               </TopicHeaderQtyQuestion>
             </TopicHeaderInfo>
           </TopicHeader>
           {item.coins ? (
             item.coins.map((coin, qindex) => {
               return (
-                <View style={{width: '100%'}}>
+                <View style={{ width: "100%" }}>
                   <TradeCoinTitleContainer>
                     <TradeCoinTitle>{coin.name}</TradeCoinTitle>
 
-                    <RemoveCoinButton onPress={() => this.removeCoin(coin)}>
-                      <RemoveCoinLabel>{i18n.t('delete')}</RemoveCoinLabel>
+                    <RemoveCoinButton onPress={() => removeCoin(coin)}>
+                      <RemoveCoinLabel>{i18n.t("delete")}</RemoveCoinLabel>
                     </RemoveCoinButton>
                   </TradeCoinTitleContainer>
                   <TradeCoinQuestionContainer>
                     <TradeCoinQuestionLabel>
-                      {i18n.t('initialOffer')}
+                      {i18n.t("initialOffer")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.initial_offer.answer}
@@ -341,7 +337,7 @@ class ReportScreen extends Component {
                   </TradeCoinQuestionContainer>
                   <TradeCoinQuestionContainer>
                     <TradeCoinQuestionLabel>
-                      {i18n.t('desiredValue')}
+                      {i18n.t("desiredValue")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.desired_value.answer}
@@ -349,7 +345,7 @@ class ReportScreen extends Component {
                   </TradeCoinQuestionContainer>
                   <TradeCoinQuestionContainer>
                     <TradeCoinQuestionLabel>
-                      {i18n.t('departurePoint')}
+                      {i18n.t("departurePoint")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.departure_point.answer}
@@ -357,7 +353,7 @@ class ReportScreen extends Component {
                   </TradeCoinQuestionContainer>
                   <TradeCoinQuestionContainer lastIndex>
                     <TradeCoinQuestionLabel>
-                      {i18n.t('desiredValueTheirs')}
+                      {i18n.t("desiredValueTheirs")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.desired_value_of_them.answer}
@@ -368,7 +364,7 @@ class ReportScreen extends Component {
             })
           ) : (
             <TradeCoinTitleContainer>
-              <TradeCoinTitle>{i18n.t('noCoins')}</TradeCoinTitle>
+              <TradeCoinTitle>{i18n.t("noCoins")}</TradeCoinTitle>
             </TradeCoinTitleContainer>
           )}
         </TopicAnswersContainer>
@@ -376,85 +372,78 @@ class ReportScreen extends Component {
     );
   }
 
-  renderReportBottom(item, index) {
-    const {negotiations} = this.props;
-    const {report} = negotiations;
+  function renderReportBottom(item, index) {
     return (
       <View>
         <TopicAnswersContainer>
           <TopicHeader>
-            <TopicHeaderIcon icon={this.state.icons[index]} />
+            <TopicHeaderIcon icon={state.icons[index]} />
             <TopicHeaderInfo>
               <TopicHeaderTitle>{item.name}</TopicHeaderTitle>
               <TopicHeaderQtyQuestion>
-                {negotiations.topics[index].qtd_answer}{' '}
-                {i18n.t('negotiationTopicQuestionsOf')}{' '}
-                {negotiations.topics[index].qtd_questions}{' '}
-                {i18n.t('negotiationTopicQuestionsText')}
+                {negotiations.topics[index].qtd_answer}{" "}
+                {i18n.t("negotiationTopicQuestionsOf")}{" "}
+                {negotiations.topics[index].qtd_questions}{" "}
+                {i18n.t("negotiationTopicQuestionsText")}
               </TopicHeaderQtyQuestion>
             </TopicHeaderInfo>
           </TopicHeader>
           <InfoAnswer font>
             {item.questions[0].answer && item.questions[0].answer.answer
               ? item.questions[0].answer.answer
-              : i18n.t('noResponse')}
+              : i18n.t("noResponse")}
           </InfoAnswer>
         </TopicAnswersContainer>
       </View>
     );
   }
 
-  saveReport() {
-    if (Platform.OS == 'ios') {
-      this.sharePDF();
+  function saveReport() {
+    if (Platform.OS == "ios") {
+      sharePDF();
     } else {
-      this.requestStoragePermissionShare();
+      requestStoragePermissionShare();
     }
   }
 
-  render() {
-    const {negotiations, user} = this.props;
-    const {report, fetching} = negotiations;
-    const {payload} = user;
-
-    return (
-      <Container>
-        <Header
-          title={i18n.t('reportHeader')}
-          showLeftButton
-          onPressLeft={() => this.props.navigation.goBack()}
-          showRightButton
-          rightIcon={Icons.share}
-          onPressRight={() => this.saveReport()}
-        />
-        {fetching ? (
-          <View
-            style={{
-              flex: 0.9,
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
-            }}>
-            <ActivityIndicator size="large" color="black" />
-          </View>
-        ) : (
-          <ScrollView>
-            {this.renderReportHeader()}
-            <ContainerList>
-              <FlatList
-                data={report}
-                renderItem={({item, index}) => this.renderItem(item, index)}
-              />
-            </ContainerList>
-            <TopMargin />
-          </ScrollView>
-        )}
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Header
+        title={i18n.t("reportHeader")}
+        showLeftButton
+        onPressLeft={() => back()}
+        showRightButton
+        rightIcon={Icons.share}
+        onPressRight={() => saveReport()}
+      />
+      {fetching ? (
+        <View
+          style={{
+            flex: 0.9,
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      ) : (
+        <ScrollView>
+          {renderReportHeader()}
+          <ContainerList>
+            <FlatList
+              data={report}
+              renderItem={({ item, index }) => renderItem(item, index)}
+            />
+          </ContainerList>
+          <TopMargin />
+        </ScrollView>
+      )}
+    </Container>
+  );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     negotiations: state.negotiations,
     language: state.language,
@@ -462,7 +451,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   const {
     negotiationTopicsRequest,
     negotiationTopicQuestionsRequest,
@@ -481,7 +470,7 @@ const mapDispatchToProps = dispatch => {
       negotiationRemoveRequest,
       negotiationCoinRemoveRequest,
     },
-    dispatch,
+    dispatch
   );
 };
 

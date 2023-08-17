@@ -32,7 +32,8 @@ export function* verifyEmail(api, action) {
       yield put(VerifyEmailActions.verifyEmailSuccess(response.data));
 
       if (data.have_password) {
-        yield put(router.push("email-auth?login=true"));
+        console.warn("HAVE PASSWORD");
+        router.push("email-auth?login=true");
       } else {
         yield put(router.push("email-auth?password=true"));
       }
@@ -44,6 +45,7 @@ export function* verifyEmail(api, action) {
       yield put(VerifyEmailActions.verifyEmailFailure());
     }
   } catch (err) {
+    console.warn({ err });
     Alert.alert("Falha ao verificar o e-mail!");
     yield put(VerifyEmailActions.verifyEmailFailure());
   }

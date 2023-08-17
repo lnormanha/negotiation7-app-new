@@ -57,6 +57,7 @@ import { I18n } from "i18n-js";
 
 import en from "../../translations/en.json";
 import pt from "../../translations/pt.json";
+import { useRouter } from "expo-router";
 
 const translations = {
   en,
@@ -65,7 +66,7 @@ const translations = {
 
 const i18n = new I18n(translations);
 
-function HomeScreen({ navigation }: any) {
+function HomeScreen(props: any) {
   const [searchText, setSearchText] = React.useState("");
   const [searchedNegotiations, setSearchedNegotiations] = React.useState([]);
   const [tagNegotiations, setTagNegotiations] = React.useState([]);
@@ -80,6 +81,8 @@ function HomeScreen({ navigation }: any) {
   const user = useSelector(UserSelectors.getUser);
   const selectedLanguage = useSelector(LanguageSelectors.getLanguage);
   const subscription = useSelector(SubscriptionSelectors.getSubscription);
+
+  const { push } = useRouter();
 
   let timer;
 
@@ -132,10 +135,7 @@ function HomeScreen({ navigation }: any) {
         language: selectedLanguage,
       })
     );
-    navigation.navigate({
-      routeName: "NegotiationScreen",
-      key: "Home",
-    });
+    push("/negotiation");
   }
 
   function searchNegotiations(text) {
@@ -310,17 +310,6 @@ function HomeScreen({ navigation }: any) {
           </SubNegotiationTitleImage>
           {i18n.t("appName")}
         </NegotiationTitleImage>
-        {!user.payload?.has_subscription && (
-          <DescriptionNegotiation
-            onPress={() => navigation.navigate("SubscriptionScreen")}
-          >
-            {i18n.t("upgradeText")}{" "}
-            <UnderLineText>{i18n.t("subscriptionFree")}</UnderLineText>
-          </DescriptionNegotiation>
-        )}
-        {!user.payload?.has_subscription && (
-          <DescriptionNegotiation>{i18n.t("rightNow")}</DescriptionNegotiation>
-        )}
       </ImageContainer>
     );
   }
@@ -332,27 +321,15 @@ function HomeScreen({ navigation }: any) {
     }
   }
 
-  function subTypeText() {
-    if (selectedLanguage == "en") {
-      if (user.payload?.type_account === "premium") {
-        return "Premium";
-      } else return "Free";
-    } else {
-      if (user.payload?.type_account === "premium") {
-        return "Premium";
-      } else return "Gratuito";
-    }
-  }
-
   return (
     <Container>
       <Header
         title={i18n.t("appName")}
         isHome
-        onPressProfile={() => navigation.navigate("ProfileScreen")}
+        onPressProfile={() => push("/profile")}
         language={selectedLanguage}
       />
-      <SubInfoArea hasSubscription={user?.payload?.has_subscription}>
+      {/* <SubInfoArea hasSubscription={user?.payload?.has_subscription}>
         <SubRemainingText>
           {i18n.t("welcomeMessage")} {user.payload?.name.split(" ")[0]}{" "}
           {user.payload?.name.split(" ")[1]}
@@ -375,7 +352,7 @@ function HomeScreen({ navigation }: any) {
             </ProgressText>
           </ProgressContainer>
         )}
-      </SubInfoArea>
+      </SubInfoArea> */}
       <Search
         onSearch={(text) => searchNegotiations(text)}
         value={searchText}
@@ -399,12 +376,7 @@ function HomeScreen({ navigation }: any) {
 
       <BottomContainer>
         <ViewButton
-          onPress={() =>
-            navigation.navigate({
-              routeName: "CreateNegotiationScreen",
-              key: "Home",
-            })
-          }
+          onPress={() => push("/create-negotiation")}
           disabled={!user.payload?.has_subscription}
         >
           <TextButton>{i18n.t("createNewNegotiation")}</TextButton>
@@ -413,10 +385,6 @@ function HomeScreen({ navigation }: any) {
           </AddButton>
         </ViewButton>
       </BottomContainer>
-      <SubscriptionModal
-        isVisible={subscription?.type === "TRIAL"}
-        navigation={navigation}
-      />
     </Container>
   );
 }

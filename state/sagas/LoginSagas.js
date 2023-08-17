@@ -12,19 +12,25 @@ import { router } from "expo-router";
 export function* login(api, action) {
   const { data } = action;
 
+  // yield put(console.warn({ data }));
+
   try {
     const response = yield call(api.login, data);
 
     if (response.ok) {
       yield put(LoginActions.loginSuccess(response.data));
+
       yield put(UserActions.userSuccess(response.data));
+
       yield put(NegotiationsActions.negotiationsListRequest(response.data.id));
+
       yield put(NegotiationsActions.negotiationsTagsRequest(response.data.id));
+
       yield put(VerifyEmailActions.verifyEmailFailure());
 
       yield put(UserActions.userSuccess(response.data));
       AsyncStorage.setItem("user_id", response.data.id.toString());
-      router.push("home");
+      yield put(router.push("home"));
       // yield put(
       //   NavigationActions.navigate({
       //     routeName: "HomeScreen",

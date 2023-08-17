@@ -12,7 +12,7 @@ export const Button = styled.TouchableOpacity`
   height: 50;
   margin-top: 50px;
   width: 200;
-  border-radius: 5;
+  border-radius: 5px;
   align-items: center;
   justify-content: center;
 `;

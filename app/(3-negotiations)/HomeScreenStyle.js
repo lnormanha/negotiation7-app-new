@@ -1,6 +1,5 @@
-import styled from 'styled-components/native';
-import {Colors, Metrics, Fonts, Icons} from '../../constants';
-
+import styled from "styled-components/native";
+import { Colors, Metrics, Fonts, Icons } from "../../constants";
 
 export const Container = styled.View`
   flex: 1;
@@ -8,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const SubInfoArea = styled.View`
-  height: ${props => (props.hasSubscription ? 130 : 80)}px;
+  height: ${(props) => (props.hasSubscription ? 130 : 80)}px;
   width: ${Metrics.screenWidth};
   background-color: ${Colors.headerBgHome};
   padding: 10px 25px 40px 25px;
@@ -20,7 +19,7 @@ export const SubRemainingText = styled.Text`
   font-family: ${Fonts.type.bold};
   color: ${Colors.white};
 `;
-export const NegotiationsContainer = styled.ScrollView``;
+export const NegotiationsContainer = styled.View``;
 
 export const ListTitle = styled.Text`
   font-size: ${Fonts.size.h5};
@@ -31,12 +30,12 @@ export const ListTitle = styled.Text`
   margin-bottom: 10px;
 `;
 
-export const Tags = styled.FlatList.attrs(props => ({
-  contentContainerStyle: {paddingVertical: 10, paddingHorizontal: 15},
+export const Tags = styled.FlatList.attrs((props) => ({
+  contentContainerStyle: { paddingVertical: 10, paddingHorizontal: 15 },
 }))``;
 
-export const Negotiations = styled.FlatList.attrs(props => ({
-  contentContainerStyle: {paddingVertical: 10},
+export const Negotiations = styled.FlatList.attrs((props) => ({
+  contentContainerStyle: { paddingVertical: 10 },
 }))``;
 
 export const Negotiation = styled.TouchableOpacity`
@@ -45,12 +44,12 @@ export const Negotiation = styled.TouchableOpacity`
   height: 80px;
   width: ${Metrics.screenWidth - 50};
   align-self: center;
-  border-radius: 05;
+  border-radius: 5px;
   align-items: center;
   margin-bottom: 10px;
 `;
 
-export const NegotiationIcon = styled.Image.attrs(props => ({
+export const NegotiationIcon = styled.Image.attrs((props) => ({
   source: Icons.report,
 }))`
   width: 28px;
@@ -100,7 +99,7 @@ export const ViewButton = styled.TouchableOpacity`
   align-self: center;
   justify-content: space-evenly;
   border-radius: 5px;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.disabled ? Colors.charcoal : Colors.headerBgHome};
 `;
 
@@ -127,7 +126,7 @@ export const AddButton = styled.View`
   border-color: ${Colors.white};
 `;
 
-export const AddIcon = styled.Image.attrs(props => ({
+export const AddIcon = styled.Image.attrs((props) => ({
   source: Icons.add,
 }))`
   height: 35px;
@@ -150,14 +149,14 @@ export const FlagButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const FlagIcon = styled.Image.attrs(props => ({
+export const FlagIcon = styled.Image.attrs((props) => ({
   source: props.image,
 }))`
   height: 48px;
   width: 48px;
 `;
 
-export const Bar = styled.Image.attrs(props => ({
+export const Bar = styled.Image.attrs((props) => ({
   source: props.image,
 }))`
   height: 20px;
@@ -173,7 +172,7 @@ export const ImageContainer = styled.View`
   justify-content: center;
 `;
 
-export const ImageNegotiation = styled.Image.attrs(props => ({
+export const ImageNegotiation = styled.Image.attrs((props) => ({
   source: props.image,
 }))`
   height: ${Metrics.screenHeight / 3.3}px;
@@ -225,7 +224,7 @@ export const InfoContainer = styled.TouchableOpacity`
   background-color: #dbe1e6;
   width: ${Metrics.screenWidth - 50};
   height: 53px;
-  border-radius: 05px;
+  border-radius: 5px;
   margin-top: 0;
   align-items: center;
   align-self: center;
@@ -261,7 +260,7 @@ export const ProgressContainer = styled.View`
 export const Progress = styled.View`
   height: 20px;
   background-color: deepskyblue;
-  width: ${props => props.width}%;
+  width: ${(props) => props.width}%;
   border-radius: 10px;
 `;
 

@@ -89,7 +89,7 @@ function EmailAuthScreen(props) {
             label="E-mail"
             placeholder={i18n.t("emailPlaceholder")}
             value={state.email}
-            onChangeText={(email) => setState({ email })}
+            onChangeText={(email) => setState({ ...state, email })}
             autoCapitalize="none"
             keyboardType="email-address"
             underlineColorAndroid="transparent"
@@ -110,7 +110,7 @@ function EmailAuthScreen(props) {
               label="E-mail"
               placeholder={i18n.t("emailPlaceholder")}
               value={email}
-              onChangeText={(email) => setState({ email })}
+              onChangeText={(email) => setState({ ...state, email })}
               autoCapitalize="none"
               keyboardType="email-address"
               underlineColorAndroid="transparent"
@@ -121,7 +121,7 @@ function EmailAuthScreen(props) {
                 label={i18n.t("passwordLabel")}
                 placeholder={i18n.t("passwordPlaceholder")}
                 value={password}
-                onChangeText={(password) => setState({ password })}
+                onChangeText={(password) => setState({ ...state, password })}
                 secureTextEntry
                 underlineColorAndroid="transparent"
                 onFocus={() => passwordInput.scrollIntoView(options)}
@@ -140,7 +140,7 @@ function EmailAuthScreen(props) {
             label={i18n.t("passwordLabel")}
             placeholder={i18n.t("passwordPlaceholder")}
             value={state.password}
-            onChangeText={(password) => setState({ password })}
+            onChangeText={(password) => setState({ ...state, password })}
             secureTextEntry
             underlineColorAndroid="transparent"
           />
@@ -163,7 +163,7 @@ function EmailAuthScreen(props) {
                   label="E-mail"
                   placeholder={i18n.t("emailPlaceholder")}
                   value={email}
-                  onChangeText={(email) => setState({ email })}
+                  onChangeText={(email) => setState({ ...state, email })}
                   autoCapitalize="none"
                   keyboardType="email-address"
                   underlineColorAndroid="transparent"
@@ -177,7 +177,7 @@ function EmailAuthScreen(props) {
                   label={i18n.t("nameLabel")}
                   placeholder={i18n.t("namePlaceholder")}
                   value={name}
-                  onChangeText={(text) => setState({ name: text })}
+                  onChangeText={(text) => setState({ ...state, name: text })}
                   underlineColorAndroid="transparent"
                 />
                 <Separator />
@@ -189,7 +189,9 @@ function EmailAuthScreen(props) {
                 <AuthInput
                   label={i18n.t("resetTokenLabel")}
                   value={resetToken}
-                  onChangeText={(text) => setState({ resetToken: text })}
+                  onChangeText={(text) =>
+                    setState({ ...state, resetToken: text })
+                  }
                   underlineColorAndroid="transparent"
                 />
                 <Separator />
@@ -200,7 +202,7 @@ function EmailAuthScreen(props) {
                 label={i18n.t("passwordLabel")}
                 placeholder={i18n.t("passwordPlaceholder")}
                 value={state.password}
-                onChangeText={(password) => setState({ password })}
+                onChangeText={(password) => setState({ ...state, password })}
                 secureTextEntry
                 underlineColorAndroid="transparent"
                 onFocus={() => passwordInput.scrollIntoView(options)}
@@ -214,7 +216,9 @@ function EmailAuthScreen(props) {
                   label={i18n.t("confirmPasswordLabel")}
                   placeholder={i18n.t("confirmPasswordLabel")}
                   value={passwordConfirm}
-                  onChangeText={(text) => setState({ passwordConfirm: text })}
+                  onChangeText={(text) =>
+                    setState({ ...state, passwordConfirm: text })
+                  }
                   secureTextEntry
                   underlineColorAndroid="transparent"
                   onFocus={() => passwordConfirmInput.scrollIntoView(options)}
@@ -228,7 +232,7 @@ function EmailAuthScreen(props) {
   }
 
   function toggleModal() {
-    setState({ isModalVisible: !state.isModalVisible });
+    setState({ ...state, isModalVisible: !state.isModalVisible });
   }
 
   function goToForgotPassword() {
