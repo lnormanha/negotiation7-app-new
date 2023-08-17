@@ -1,6 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "expo-router";
+import React from "react";
+import { useLocalization } from "@/context/LocalizationProvider";
 
 import {
   Container,
@@ -12,50 +11,52 @@ import {
   RightIcons,
   LeftIconsContainer,
   LeftIconsArea,
-  LogoContainer,
   PreviewButton,
   PreviewLabel,
 } from "./HeaderStyle";
 import { Icons, Images } from "../../constants";
-// import { i18n.t, setI18nConfig } from "../Services/TranslationService";
 
-export default class Header extends Component {
+interface HeaderProps {
+  title: string;
+  showRightButton?: boolean;
+  rightIcon?: string;
+  leftIcon?: string;
+  onPressLeft?(): void;
+  onPressRight?(): void;
+  onPressReport?(): void;
+  onPressProfile?(): void;
+  isHome?: boolean;
+  isNegotiation?: boolean;
+  iconUser?: string;
+  imageLogo?: string;
+  imageBack?: string;
+  imageClose?: string;
+  imageReport?: string;
+  language?: string;
+}
+
+export default function Header({
+  title = "Screen",
+  showRightButton,
+  rightIcon,
+  leftIcon,
+  onPressLeft,
+  onPressRight,
+  onPressReport,
+  onPressProfile,
+  isHome,
+  isNegotiation,
+  iconUser = Icons.user,
+  imageLogo = Images.logo,
+  imageBack = Icons.back,
+  imageClose = Icons.close,
+  imageReport = Icons.report,
+  language,
+}: HeaderProps) {
   // Prop type warnings
-  static propTypes = {
-    title: PropTypes.string,
-    showRightButton: PropTypes.bool,
-    rightIcon: PropTypes.string,
-    leftIcon: PropTypes.string,
-    onPressLeft: PropTypes.func,
-    onPressRight: PropTypes.func,
-    onPressReport: PropTypes.func,
-    onPressProfile: PropTypes.func,
-    isHome: PropTypes.bool,
-    isNegotiation: PropTypes.bool,
-    iconUser: PropTypes.string,
-    imageLogo: PropTypes.Strings,
-    imageBack: PropTypes.Strings,
-    imageClose: PropTypes.Strings,
-    imageReport: PropTypes.string,
-    language: PropTypes.string,
-  };
+  const { getLocaleString } = useLocalization();
 
-  // Defaults for props
-  static defaultProps = {
-    title: "Screen",
-    imageLogo: Images.logo,
-    iconBell: Icons.bell,
-    iconUser: Icons.user,
-    rightIcon: Icons.close,
-    imageLanding: Icons.landing,
-    imageClose: Icons.close,
-    imageBack: Icons.back,
-    imageReport: Icons.report,
-  };
-
-  renderHome() {
-    const { title, isHome, iconBell, iconUser, onPressProfile, language } =
-      this.props;
+  function renderHome() {
     return (
       <Container isHome>
         <LeftIconsContainer>
@@ -77,15 +78,7 @@ export default class Header extends Component {
     );
   }
 
-  renderNegotiation() {
-    const {
-      title,
-      imageBack,
-      onPressLeft,
-      onPressReport,
-      imageUser,
-      imageReport,
-    } = this.props;
+  function renderNegotiation() {
     return (
       <Container isNegotiation>
         <LeftIconsContainer>
@@ -96,22 +89,14 @@ export default class Header extends Component {
         </LeftIconsContainer>
         <RightIconsContainer>
           <PreviewButton onPress={onPressReport}>
-            <PreviewLabel>Report</PreviewLabel>
+            <PreviewLabel>{getLocaleString("preview")}</PreviewLabel>
           </PreviewButton>
         </RightIconsContainer>
       </Container>
     );
   }
 
-  defaultHeader() {
-    const {
-      title,
-      imageBack,
-      rightIcon,
-      onPressLeft,
-      onPressRight,
-      showRightButton,
-    } = this.props;
+  function defaultHeader() {
     return (
       <Container>
         <LeftIconsContainer>
@@ -128,19 +113,15 @@ export default class Header extends Component {
       </Container>
     );
   }
-  renderHeader() {
-    const { isHome, isNegotiation } = this.props;
-
+  function renderHeader() {
     if (isHome) {
-      return this.renderHome();
+      return renderHome();
     } else if (isNegotiation) {
-      return this.renderNegotiation();
+      return renderNegotiation();
     } else {
-      return this.defaultHeader();
+      return defaultHeader();
     }
   }
 
-  render() {
-    return this.renderHeader();
-  }
+  return renderHeader();
 }

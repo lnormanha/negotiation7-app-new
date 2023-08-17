@@ -368,7 +368,7 @@ function ReportScreen(props) {
         onPressLeft={() => back()}
         showRightButton
         rightIcon={Icons.share}
-        onPressRight={() => saveReport()}
+        onPressRight={() => sharePDF()}
       />
       {fetching ? (
         <View

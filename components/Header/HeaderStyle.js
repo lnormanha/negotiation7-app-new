@@ -42,13 +42,13 @@ export const LogoIcon = styled.Image.attrs((prop) => ({
 export const LeftIcons = styled.Image.attrs((prop) => ({
   source: prop.image,
 }))`
-  width: ${(props) => (props.isHome ? 60 : 32)};
-  height: ${(props) => (props.isHome ? 60 : 32)};
+  width: ${(props) => (props.isHome ? 60 : 32)}px;
+  height: ${(props) => (props.isHome ? 60 : 32)}px;
 `;
 export const LeftIconsContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-left: ${(props) => (props.isHome ? 40 : 30)};
+  margin-left: ${(props) => (props.isHome ? 40 : 30)}px;
   justify-content: center;
 `;
 
@@ -68,6 +68,7 @@ export const RightIconsContainer = styled.View`
 export const RightIcons = styled.Image.attrs((prop) => ({
   source: prop.image,
   resizeMode: "contain",
+  tintColor: Colors.black,
 }))`
   height: 30px;
   width: 30px;
