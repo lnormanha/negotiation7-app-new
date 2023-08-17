@@ -107,7 +107,7 @@ function ProfileScreen(props) {
               `${i18n.t("trial")}`}
           </SubType>
         )} */}
-
+        {/* 
         {payload?.has_subscription && (
           <ProgressContainer>
             <Progress width={subProgress} />
@@ -119,7 +119,7 @@ function ProfileScreen(props) {
                   )} ${i18n.t("remaining")}`}
             </ProgressText>
           </ProgressContainer>
-        )}
+        )} */}
 
         {/* <OptionItem
           onPress={() => props.navigation.navigate("SubscriptionScreen")}
@@ -178,7 +178,7 @@ function ProfileScreen(props) {
             style={{ width: 256, height: 256 }}
             resizeMode="contain"
           />
-          <TripsCopyright>v1.3.6 - 2022 ©</TripsCopyright>
+          <TripsCopyright>v2.0.0 - 2023 ©</TripsCopyright>
         </View>
       </ScrollView>
     </Container>

@@ -15,6 +15,7 @@ import { bindActionCreators } from "redux";
 
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import * as Sharing from "expo-sharing";
+import * as Print from "expo-print";
 
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 import { mapToHtml } from "../../services/CreatePDFReport";
@@ -127,16 +128,15 @@ function NegotiationScreen(props) {
       name: user.payload.name,
       locale: language.selected,
     };
-    let options = {
-      height: 842,
-      width: 595,
-      html: mapToHtml(data),
-      fileName: `NEGOTIATION7-Report-${current.title}`,
-      directory: "Documents",
-    };
-    // let file = await RNHTMLtoPDF.convert(options);
-    setState({ ...state, filePath: file.filePath });
-    console.log("PDF Salvo com sucesso em: ", file.filePath);
+
+    const html = mapToHtml(data);
+
+    console.log({ html });
+
+    const { uri } = await Print.printToFileAsync({ html });
+
+    setState({ ...state, filePath: uri });
+    console.log("PDF Salvo com sucesso em: ", uri);
   }
 
   async function sharePDF() {
@@ -145,21 +145,7 @@ function NegotiationScreen(props) {
     let filePath = `file://${state.filePath}`;
     let type = "application/pdf";
 
-    if (Platform.OS == "ios") {
-      await Sharing.shareAsync(filePath);
-      Share.open({
-        url: filePath,
-        mimeType: type,
-      })
-        .then((resShare) => {
-          console.log({ resShare });
-        })
-        .catch((err) => {
-          err && console.log({ err });
-        });
-    } else {
-      sharePDFWithAndroid(filePath, type);
-    }
+    await Sharing.shareAsync(filePath, { UTI: ".pdf", mimeType: type });
   }
 
   async function sharePDFWithAndroid(pdfPath, type) {
@@ -317,26 +303,16 @@ function NegotiationScreen(props) {
               <OptionButton onPress={() => goToReport()}>
                 <Icon icon={Icons.preview} />
               </OptionButton>
-              {!subscription_data?.hasExpired && (
-                <OptionButton
-                  onPress={() =>
-                    Platform.OS == "ios"
-                      ? sharePDF()
-                      : requestStoragePermission()
-                  }
-                >
-                  <Icon icon={Icons.share} />
-                </OptionButton>
-              )}
+              <OptionButton onPress={() => sharePDF()}>
+                <Icon icon={Icons.share} />
+              </OptionButton>
 
-              {!subscription_data?.hasExpired && (
-                <OptionButton
-                  red
-                  onPress={() => setState({ ...state, isModalVisible: true })}
-                >
-                  <Icon icon={Icons.remove} />
-                </OptionButton>
-              )}
+              <OptionButton
+                red
+                onPress={() => setState({ ...state, isModalVisible: true })}
+              >
+                <Icon icon={Icons.remove} />
+              </OptionButton>
             </OptionArea>
           </Content>
           {/* {!subscription_data ||
