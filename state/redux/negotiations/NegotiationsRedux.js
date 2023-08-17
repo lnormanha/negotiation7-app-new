@@ -222,7 +222,7 @@ export const tagsSuccess = (state, action) => {
   const sortedTags = payload.sort(
     (a, b) => b.negotiations_qty - a.negotiations_qty
   );
-  console.tron.log({ sortedTags });
+  console.log({ sortedTags });
   return state.merge({
     tags: sortedTags,
     fetching: false

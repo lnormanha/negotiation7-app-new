@@ -11,7 +11,7 @@ import {
 } from "./ModalStyles";
 import ModalLib from "react-native-modal";
 
-// import { translate, setI18nConfig } from "../../Services/TranslationService";
+// import { i18n.t, setI18nConfig } from "../../Services/TranslationService";
 
 export default class Modal extends Component {
   // Prop type warnings

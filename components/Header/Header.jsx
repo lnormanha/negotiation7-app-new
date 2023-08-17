@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Link } from "expo-router";
+
 import {
   Container,
   Title,
@@ -12,10 +14,10 @@ import {
   LeftIconsArea,
   LogoContainer,
   PreviewButton,
-  PreviewLabel
+  PreviewLabel,
 } from "./HeaderStyle";
 import { Icons, Images } from "../../constants";
-// import { translate, setI18nConfig } from "../Services/TranslationService";
+// import { i18n.t, setI18nConfig } from "../Services/TranslationService";
 
 export default class Header extends Component {
   // Prop type warnings
@@ -35,7 +37,7 @@ export default class Header extends Component {
     imageBack: PropTypes.Strings,
     imageClose: PropTypes.Strings,
     imageReport: PropTypes.string,
-    language: PropTypes.string
+    language: PropTypes.string,
   };
 
   // Defaults for props
@@ -48,18 +50,12 @@ export default class Header extends Component {
     imageLanding: Icons.landing,
     imageClose: Icons.close,
     imageBack: Icons.back,
-    imageReport: Icons.report
+    imageReport: Icons.report,
   };
 
   renderHome() {
-    const {
-      title,
-      isHome,
-      iconBell,
-      iconUser,
-      onPressProfile,
-      language
-    } = this.props;
+    const { title, isHome, iconBell, iconUser, onPressProfile, language } =
+      this.props;
     return (
       <Container isHome>
         <LeftIconsContainer>
@@ -88,7 +84,7 @@ export default class Header extends Component {
       onPressLeft,
       onPressReport,
       imageUser,
-      imageReport
+      imageReport,
     } = this.props;
     return (
       <Container isNegotiation>
@@ -114,7 +110,7 @@ export default class Header extends Component {
       rightIcon,
       onPressLeft,
       onPressRight,
-      showRightButton
+      showRightButton,
     } = this.props;
     return (
       <Container>

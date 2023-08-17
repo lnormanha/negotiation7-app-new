@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
-import {Platform} from 'react-native';
-import {Colors, Metrics, Fonts, Icons} from '../../constants';
+import styled from "styled-components/native";
+import { Platform } from "react-native";
+import { Colors, Metrics, Fonts, Icons } from "../../constants";
 // import {
 //   isIphoneX,
 //   getBottomSpace,
@@ -15,14 +15,14 @@ export const Container = styled.View`
   align-items: center;
   height: 100px;
   width: ${Metrics.screenWidth};
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isHome ? Colors.headerBgHome : Colors.headerBg};
   padding-top: 0px;
   justify-content: space-between;
 `;
 
 export const Title = styled.Text`
-  color: ${props => (props.isHome ? Colors.white : Colors.title)};
+  color: ${(props) => (props.isHome ? Colors.white : Colors.title)};
   margin-left: 25px;
   margin-right: 10px;
   font-size: 20px;
@@ -32,23 +32,23 @@ export const Title = styled.Text`
   font-family: ${Fonts.type.medium};
 `;
 
-export const LogoIcon = styled.Image.attrs(prop => ({
+export const LogoIcon = styled.Image.attrs((prop) => ({
   source: prop.image,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }))`
   width: 230px;
   height: 50px;
 `;
-export const LeftIcons = styled.Image.attrs(prop => ({
+export const LeftIcons = styled.Image.attrs((prop) => ({
   source: prop.image,
 }))`
-  width: ${props => (props.isHome ? 60 : 32)};
-  height: ${props => (props.isHome ? 60 : 32)};
+  width: ${(props) => (props.isHome ? 60 : 32)};
+  height: ${(props) => (props.isHome ? 60 : 32)};
 `;
 export const LeftIconsContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-left: ${props => (props.isHome ? 40 : 30)};
+  margin-left: ${(props) => (props.isHome ? 40 : 30)};
   justify-content: center;
 `;
 
@@ -65,9 +65,9 @@ export const RightIconsContainer = styled.View`
   margin-right: 40px;
 `;
 
-export const RightIcons = styled.Image.attrs(prop => ({
+export const RightIcons = styled.Image.attrs((prop) => ({
   source: prop.image,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }))`
   height: 30px;
   width: 30px;
