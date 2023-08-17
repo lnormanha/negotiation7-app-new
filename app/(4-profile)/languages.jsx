@@ -1,35 +1,19 @@
 import React, { Component } from "react";
-import { Header } from "../../components";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import LanguageActions from "../../state/redux/languages/LanguageRedux";
+import { useRouter } from "expo-router";
+
 import { useLocalization } from "@/context/LocalizationProvider";
 
+import { Header } from "../../components";
 import {
   Container,
-  Text,
   LanguageItem,
   LanguageLabel,
   CheckIcon,
 } from "./LanguageScreenStyles";
-import { useRouter } from "expo-router";
 
-function LanguageScreen(props) {
-  // constructor(props) {
-  //   super(props);
-  //   // startLocalizeListener("change", this.handleLocalizationChange);
-  // }
-
-  // componentWillUnmount() {
-  //   stopLocalizeListener("change", this.handleLocalizationChange);
-  // }
-
-  // handleLocalizationChange = language => {
-  //   setI18nConfig(language, false);
-  //   this.props.setLanguage(language);
-  //   this.forceUpdate();
-  // };
-
+function LanguageScreen() {
   const { getLocaleString, changeLocale, currentLocale } = useLocalization();
 
   const { back } = useRouter();
@@ -52,14 +36,4 @@ function LanguageScreen(props) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { language: state.language };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  const { setLanguage } = LanguageActions;
-
-  return bindActionCreators({ setLanguage }, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageScreen);
+export default LanguageScreen;

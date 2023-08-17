@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { ScrollView } from "react-native";
-import { Header } from "../../components";
 import { connect } from "react-redux";
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+import { useRouter } from "expo-router";
 
-// Styles
+import { useLocalization } from "@/context/LocalizationProvider";
+
+import { Header } from "../../components";
 import {
   Container,
   SectionTitle,
@@ -13,20 +13,9 @@ import {
   Separator,
 } from "./PrivacyPolicyScreenStyles";
 
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-import { useRouter } from "expo-router";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
-
 function PrivacyPolicyScreen(props) {
+  const { getLocaleString, currentLocale } = useLocalization();
+
   function renderBRContent() {
     return (
       <ScrollView>
@@ -369,8 +358,11 @@ function PrivacyPolicyScreen(props) {
 
   return (
     <Container>
-      <Header title={i18n.t("privacyHeader")} onPressLeft={() => back()} />
-      {props.language.selected == "en" ? renderENContent() : renderBRContent()}
+      <Header
+        title={getLocaleString("privacyHeader")}
+        onPressLeft={() => back()}
+      />
+      {currentLocale == "en" ? renderENContent() : renderBRContent()}
     </Container>
   );
 }

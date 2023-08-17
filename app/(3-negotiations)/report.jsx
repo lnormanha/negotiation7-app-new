@@ -1,33 +1,22 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
   ActivityIndicator,
   PermissionsAndroid,
   Platform,
-  Alert,
 } from "react-native";
 import { Header } from "../../components";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
-import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
-// import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import * as Sharing from "expo-sharing";
 import * as Print from "expo-print";
+import { ScrollView } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
+
+import { useLocalization } from "@/context/LocalizationProvider";
 import { mapToHtml } from "../../services/CreatePDFReport";
-
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
+import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 
 import {
   Container,
@@ -35,7 +24,6 @@ import {
   TopMargin,
   InfoLabel,
   InfoAnswer,
-  InfoMargin,
   TopicAnswersContainer,
   TopicHeader,
   TopicHeaderIcon,
@@ -56,13 +44,13 @@ import {
   RemoveCoinButton,
 } from "./ReportScreenStyles";
 import { Icons } from "../../constants";
-import { ScrollView } from "react-native-gesture-handler";
-import { useRouter } from "expo-router";
 
 function ReportScreen(props) {
   const { negotiations, user, language } = props;
   const { fetching, current, report } = negotiations;
   const { payload } = user;
+
+  const { getLocaleString } = useLocalization();
 
   const initialState = {
     icons: [
@@ -105,34 +93,6 @@ function ReportScreen(props) {
     let type = "application/pdf";
 
     await Sharing.shareAsync(filePath, { UTI: ".pdf", mimeType: type });
-  }
-
-  async function sharePDFWithAndroid(pdfPath, type) {
-    Sharing.shareAsync(pdfPath);
-  }
-
-  async function requestStoragePermissionCreate() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: "Permissão para armazenamento externo",
-          message:
-            "Negociação 7.0 precisa acessar seu armazenameto " +
-            "para salvar o relatório.",
-          buttonNeutral: "Perguntar depois",
-          buttonNegative: "Cancelar",
-          buttonPositive: "OK",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        createPDF(true);
-      } else {
-        console.log("Storage permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
   }
 
   async function requestStoragePermissionShare() {
@@ -206,24 +166,28 @@ function ReportScreen(props) {
         return (
           <View>
             <TopMargin />
-            <InfoLabel>{i18n.t("clientLabel")}</InfoLabel>
+            <InfoLabel>{getLocaleString("clientLabel")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[0].answer?.answer || i18n.t("noResponse")}
+              {item.questions[0].answer?.answer ||
+                getLocaleString("noResponse")}
             </InfoAnswer>
             <TopMargin />
-            <InfoLabel>{i18n.t("negotiationPlace")}</InfoLabel>
+            <InfoLabel>{getLocaleString("negotiationPlace")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[1].answer?.answer || i18n.t("noResponse")}
+              {item.questions[1].answer?.answer ||
+                getLocaleString("noResponse")}
             </InfoAnswer>
             <TopMargin />
-            <InfoLabel>{i18n.t("negotiationDate")}</InfoLabel>
+            <InfoLabel>{getLocaleString("negotiationDate")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[2].answer?.answer || i18n.t("noResponse")}
+              {item.questions[2].answer?.answer ||
+                getLocaleString("noResponse")}
             </InfoAnswer>
             <TopMargin />
-            <InfoLabel>{i18n.t("negotiationTime")}</InfoLabel>
+            <InfoLabel>{getLocaleString("negotiationTime")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[3].answer?.answer || i18n.t("noResponse")}
+              {item.questions[3].answer?.answer ||
+                getLocaleString("noResponse")}
             </InfoAnswer>
             <TopMargin />
           </View>
@@ -231,9 +195,10 @@ function ReportScreen(props) {
       } else {
         return (
           <View>
-            <InfoLabel>{i18n.t("objectNegotiationLabel")}</InfoLabel>
+            <InfoLabel>{getLocaleString("objectNegotiationLabel")}</InfoLabel>
             <InfoAnswer>
-              {item.questions[0].answer?.answer || i18n.t("noResponse")}
+              {item.questions[0].answer?.answer ||
+                getLocaleString("noResponse")}
             </InfoAnswer>
             <TopMargin />
           </View>
@@ -252,18 +217,22 @@ function ReportScreen(props) {
               <TopicHeaderTitle>{item.name}</TopicHeaderTitle>
               <TopicHeaderQtyQuestion>
                 {negotiations.topics[index].qtd_answer}{" "}
-                {i18n.t("negotiationTopicQuestionsOf")}{" "}
+                {getLocaleString("negotiationTopicQuestionsOf")}{" "}
                 {negotiations.topics[index].qtd_questions}{" "}
-                {i18n.t("negotiationTopicQuestionsText")}
+                {getLocaleString("negotiationTopicQuestionsText")}
               </TopicHeaderQtyQuestion>
             </TopicHeaderInfo>
           </TopicHeader>
           <TopicAnswersHeaders>
             <TopicAnswerHeader leftPos>
-              <TopicAnswerTitle>{i18n.t("oursLabel")}</TopicAnswerTitle>
+              <TopicAnswerTitle>
+                {getLocaleString("oursLabel")}
+              </TopicAnswerTitle>
             </TopicAnswerHeader>
             <TopicAnswerHeader rightPos>
-              <TopicAnswerTitle>{i18n.t("theirsLabel")}</TopicAnswerTitle>
+              <TopicAnswerTitle>
+                {getLocaleString("theirsLabel")}
+              </TopicAnswerTitle>
             </TopicAnswerHeader>
           </TopicAnswersHeaders>
           {item.questions.map((question, qindex) => {
@@ -273,7 +242,7 @@ function ReportScreen(props) {
                 rightPos={qindex == 1}
               >
                 <TopicAnswerText>
-                  {question?.answer?.answer || i18n.t("noResponse")}
+                  {question?.answer?.answer || getLocaleString("noResponse")}
                 </TopicAnswerText>
               </TopicAnswerContainer>
             );
@@ -293,9 +262,9 @@ function ReportScreen(props) {
               <TopicHeaderTitle>{item.name}</TopicHeaderTitle>
               <TopicHeaderQtyQuestion>
                 {negotiations.topics[index].qtd_answer}{" "}
-                {i18n.t("negotiationTopicQuestionsOf")}{" "}
+                {getLocaleString("negotiationTopicQuestionsOf")}{" "}
                 {negotiations.topics[index].qtd_questions}{" "}
-                {i18n.t("negotiationTopicQuestionsText")}
+                {getLocaleString("negotiationTopicQuestionsText")}
               </TopicHeaderQtyQuestion>
             </TopicHeaderInfo>
           </TopicHeader>
@@ -307,12 +276,14 @@ function ReportScreen(props) {
                     <TradeCoinTitle>{coin.name}</TradeCoinTitle>
 
                     <RemoveCoinButton onPress={() => removeCoin(coin)}>
-                      <RemoveCoinLabel>{i18n.t("delete")}</RemoveCoinLabel>
+                      <RemoveCoinLabel>
+                        {getLocaleString("delete")}
+                      </RemoveCoinLabel>
                     </RemoveCoinButton>
                   </TradeCoinTitleContainer>
                   <TradeCoinQuestionContainer>
                     <TradeCoinQuestionLabel>
-                      {i18n.t("initialOffer")}
+                      {getLocaleString("initialOffer")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.initial_offer.answer}
@@ -320,7 +291,7 @@ function ReportScreen(props) {
                   </TradeCoinQuestionContainer>
                   <TradeCoinQuestionContainer>
                     <TradeCoinQuestionLabel>
-                      {i18n.t("desiredValue")}
+                      {getLocaleString("desiredValue")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.desired_value.answer}
@@ -328,7 +299,7 @@ function ReportScreen(props) {
                   </TradeCoinQuestionContainer>
                   <TradeCoinQuestionContainer>
                     <TradeCoinQuestionLabel>
-                      {i18n.t("departurePoint")}
+                      {getLocaleString("departurePoint")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.departure_point.answer}
@@ -336,7 +307,7 @@ function ReportScreen(props) {
                   </TradeCoinQuestionContainer>
                   <TradeCoinQuestionContainer lastIndex>
                     <TradeCoinQuestionLabel>
-                      {i18n.t("desiredValueTheirs")}
+                      {getLocaleString("desiredValueTheirs")}
                     </TradeCoinQuestionLabel>
                     <TradeCoinQuestionAnswer>
                       {coin.desired_value_of_them.answer}
@@ -347,7 +318,7 @@ function ReportScreen(props) {
             })
           ) : (
             <TradeCoinTitleContainer>
-              <TradeCoinTitle>{i18n.t("noCoins")}</TradeCoinTitle>
+              <TradeCoinTitle>{getLocaleString("noCoins")}</TradeCoinTitle>
             </TradeCoinTitleContainer>
           )}
         </TopicAnswersContainer>
@@ -365,16 +336,16 @@ function ReportScreen(props) {
               <TopicHeaderTitle>{item.name}</TopicHeaderTitle>
               <TopicHeaderQtyQuestion>
                 {negotiations.topics[index].qtd_answer}{" "}
-                {i18n.t("negotiationTopicQuestionsOf")}{" "}
+                {getLocaleString("negotiationTopicQuestionsOf")}{" "}
                 {negotiations.topics[index].qtd_questions}{" "}
-                {i18n.t("negotiationTopicQuestionsText")}
+                {getLocaleString("negotiationTopicQuestionsText")}
               </TopicHeaderQtyQuestion>
             </TopicHeaderInfo>
           </TopicHeader>
           <InfoAnswer font>
             {item.questions[0].answer && item.questions[0].answer.answer
               ? item.questions[0].answer.answer
-              : i18n.t("noResponse")}
+              : getLocaleString("noResponse")}
           </InfoAnswer>
         </TopicAnswersContainer>
       </View>
@@ -392,7 +363,7 @@ function ReportScreen(props) {
   return (
     <Container>
       <Header
-        title={i18n.t("reportHeader")}
+        title={getLocaleString("reportHeader")}
         showLeftButton
         onPressLeft={() => back()}
         showRightButton

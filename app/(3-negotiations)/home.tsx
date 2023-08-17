@@ -39,7 +39,6 @@ import {
 
 function HomeScreen(props: any) {
   const { getLocaleString, currentLocale, changeLocale } = useLocalization();
-  console.log({ currentLocale });
 
   const [searchText, setSearchText] = React.useState("");
   const [searchedNegotiations, setSearchedNegotiations] = React.useState([]);
@@ -58,12 +57,6 @@ function HomeScreen(props: any) {
   let timer;
 
   React.useEffect(() => {
-    AsyncStorage.getItem("language").then((res) => {
-      if (res != null) {
-        changeLocale(res);
-      }
-    });
-
     AsyncStorage.getItem("showTutorial").then((res) => {
       if (res != null) {
         dispatch(NegotiationsActions.setTutorial(JSON.parse(res)));

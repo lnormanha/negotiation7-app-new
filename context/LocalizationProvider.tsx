@@ -11,6 +11,7 @@ import { I18n } from "i18n-js";
 
 import en from "../translations/en.json";
 import pt from "../translations/pt.json";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const translations = {
   en,
@@ -36,15 +37,25 @@ function LocalizationProvider({
 
   const [currentLocale, setCurrentLocale] = useState(i18n.locale);
 
+  useEffect(() => {
+    AsyncStorage.getItem("language").then((res) => {
+      if (res != null) {
+        changeLocale(res);
+      }
+    });
+  }, []);
+
   function getLocaleString(localeString: string) {
     return i18n.t(localeString);
   }
 
-  function changeLocale(locale: "en" | "pt") {
+  function changeLocale(locale: string) {
     let i18n = new I18n(translations);
     i18n.locale = locale;
     setCurrentLocale(locale);
     setI18n(i18n);
+
+    AsyncStorage.setItem("language", locale);
   }
 
   return (

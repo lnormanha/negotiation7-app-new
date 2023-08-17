@@ -1,19 +1,13 @@
-import React, { Component, useEffect, useState } from "react";
-import {
-  FlatList,
-  View,
-  ActivityIndicator,
-  ScrollView,
-  AsyncStorage,
-} from "react-native";
-import { Header, Button } from "../../components";
+import React, { useEffect, useState } from "react";
+import { FlatList, View, ActivityIndicator, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-// import KeyboardSpacer from "react-native-keyboard-spacer";
 import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
+import { useRouter } from "expo-router";
 
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 
+import { Header, Button } from "../../components";
 import {
   Container,
   QuestionsContainer,
@@ -34,19 +28,6 @@ import {
   BottomContainer,
 } from "./TopicScreenStyles";
 import { Icons, Metrics } from "../../constants";
-import { useRouter } from "expo-router";
-
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
 
 const CustomScrollView = wrapScrollView(ScrollView);
 const options = {
@@ -66,7 +47,7 @@ function TopicScreen(props) {
     createRefs: true,
   };
 
-  const { negotiations, user, language } = props;
+  const { negotiations, user } = props;
   const {
     current_topic,
     answers,
@@ -82,6 +63,7 @@ function TopicScreen(props) {
 
   const [state, setState] = useState(initialState);
   const { push, back, replace } = useRouter();
+  const { getLocaleString, currentLocale } = useLocalization();
 
   const { current_coin, askNextCoin, createRefs } = state;
 
@@ -107,11 +89,11 @@ function TopicScreen(props) {
   function goBack() {
     props.negotiationTopicsRequest({
       id: current.id,
-      language: props.language.selected,
+      language: currentLocale,
     });
     props.negotiationReportRequest({
       id: current.id,
-      language: props.language.selected,
+      language: currentLocale,
     });
     props.negotiationInfoRequest(current.id);
     back();
@@ -154,7 +136,7 @@ function TopicScreen(props) {
     const nextTopic = topics[current_topic.id];
     props.negotiationTopicQuestionsRequest({
       id: nextTopic.id,
-      language: language.selected,
+      language: currentLocale,
     });
     props.setCurrentTopic(nextTopic);
     if (current_topic.id != 8) {
@@ -172,7 +154,7 @@ function TopicScreen(props) {
   function goToReport() {
     props.negotiationReportRequest({
       id: current.id,
-      language: language.selected,
+      language: currentLocale,
     });
     push("/report");
   }
@@ -181,7 +163,7 @@ function TopicScreen(props) {
     setTimeout(() => {
       props.negotiationTopicQuestionsRequest({
         id: topic.id,
-        language: language.selected,
+        language: currentLocale,
       });
     }, 300);
 
@@ -245,7 +227,7 @@ function TopicScreen(props) {
           <QuestionLabel>{questions[index]?.title}</QuestionLabel>
           <QuestionDesc>{questions[index]?.description}</QuestionDesc>
           <QuestionInput
-            placeholder={i18n.t("answerHere")}
+            placeholder={getLocaleString("answerHere")}
             value={answers[index]?.answer}
             onChangeText={(name) => handleChangeAnswer(index, name)}
             onSubmitEditing={() =>
@@ -266,17 +248,19 @@ function TopicScreen(props) {
     return (
       <AskCoinContainer>
         <TopMargin />
-        <QuestionLabel isCoin>{i18n.t("tradablesTitleFlow")}</QuestionLabel>
+        <QuestionLabel isCoin>
+          {getLocaleString("tradablesTitleFlow")}
+        </QuestionLabel>
         <BottomMargin />
         <ButtonRow>
           <Button
-            title={i18n.t("no")}
+            title={getLocaleString("no")}
             spaced_icons
             onPress={() => endCoinFlow()}
             small
           />
           <Button
-            title={i18n.t("yes")}
+            title={getLocaleString("yes")}
             spaced_icons
             onPress={() => setState({ ...state, askNextCoin: false })}
             small
@@ -312,7 +296,7 @@ function TopicScreen(props) {
   return (
     <Container>
       <Header
-        title={i18n.t("negotiationHeader")}
+        title={getLocaleString("negotiationHeader")}
         showLeftButton
         onPressLeft={() => goBack()}
         showRightButton
@@ -345,8 +329,8 @@ function TopicScreen(props) {
           <Button
             title={
               current_topic.id == 8
-                ? i18n.t("topicQuestionFinalizeButton")
-                : i18n.t("topicQuestionContinueButton")
+                ? getLocaleString("topicQuestionFinalizeButton")
+                : getLocaleString("topicQuestionContinueButton")
             }
             showIcon={current_topic.id == 8 ? false : true}
             spaced_icons
