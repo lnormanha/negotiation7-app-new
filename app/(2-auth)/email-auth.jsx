@@ -1,31 +1,18 @@
-import React, { Component, useState } from "react";
-import { View } from "react-native";
-import {
-  Header,
-  AuthInput,
-  FullButton,
-  Input,
-  Modal,
-  Button,
-} from "../../components";
+import React, { useState } from "react";
+import { View, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { useGlobalSearchParams, useRouter } from "expo-router";
+import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
 
-import {
-  router,
-  useGlobalSearchParams,
-  useNavigation,
-  useRouter,
-} from "expo-router";
-
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+import { useLocalization } from "@/context/LocalizationProvider";
 import VerifyEmailActions from "../../state/redux/verify-email/VerifyEmailRedux";
 import LoginActions from "../../state/redux/login/LoginRedux";
 import SignUpActions from "../../state/redux/sign-up/SignUpRedux";
 import UserActions from "../../state/redux/user/UserRedux";
 
-// Styles
+import { Header, AuthInput, Button } from "../../components";
+
 import {
   Container,
   Content,
@@ -33,19 +20,6 @@ import {
   Separator,
   BottomContainer,
 } from "./EmailAuthScreenStyles";
-import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
-import { ScrollView } from "react-native";
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
 
 const CustomScrollView = wrapScrollView(ScrollView);
 
@@ -68,6 +42,8 @@ function EmailAuthScreen(props) {
     resetToken: "",
     isModalVisible: false,
   };
+  const { getLocaleString, currentLocale } = useLocalization();
+
   const [state, setState] = useState(initialState);
   const { login: loginProps, signup, verify_email, user } = props;
   const { push, back } = useRouter();
@@ -82,12 +58,14 @@ function EmailAuthScreen(props) {
         <Content>
           <Separator />
           <Title>
-            {verify ? i18n.t("loginEmailLabel") : i18n.t("forgotPasswordLabel")}
+            {verify
+              ? getLocaleString("loginEmailLabel")
+              : getLocaleString("forgotPasswordLabel")}
           </Title>
           <Separator />
           <AuthInput
             label="E-mail"
-            placeholder={i18n.t("emailPlaceholder")}
+            placeholder={getLocaleString("emailPlaceholder")}
             value={state.email}
             onChangeText={(email) => setState({ ...state, email })}
             autoCapitalize="none"
@@ -102,13 +80,13 @@ function EmailAuthScreen(props) {
           <CustomScrollView>
             <Separator />
             <Title>
-              {i18n.t("loginEmailWelcomeBack")},{" "}
+              {getLocaleString("loginEmailWelcomeBack")},{" "}
               {verify_email.payload?.user.name}!
             </Title>
             <Separator />
             <AuthInput
               label="E-mail"
-              placeholder={i18n.t("emailPlaceholder")}
+              placeholder={getLocaleString("emailPlaceholder")}
               value={email}
               onChangeText={(email) => setState({ ...state, email })}
               autoCapitalize="none"
@@ -118,8 +96,8 @@ function EmailAuthScreen(props) {
             <Separator />
             <ScrollIntoView ref={(x) => (passwordInput = x)}>
               <AuthInput
-                label={i18n.t("passwordLabel")}
-                placeholder={i18n.t("passwordPlaceholder")}
+                label={getLocaleString("passwordLabel")}
+                placeholder={getLocaleString("passwordPlaceholder")}
                 value={password}
                 onChangeText={(password) => setState({ ...state, password })}
                 secureTextEntry
@@ -134,11 +112,11 @@ function EmailAuthScreen(props) {
       return (
         <Content>
           <Separator />
-          <Title>{i18n.t("loginExistingEmail")}</Title>
+          <Title>{getLocaleString("loginExistingEmail")}</Title>
           <Separator />
           <AuthInput
-            label={i18n.t("passwordLabel")}
-            placeholder={i18n.t("passwordPlaceholder")}
+            label={getLocaleString("passwordLabel")}
+            placeholder={getLocaleString("passwordPlaceholder")}
             value={state.password}
             onChangeText={(password) => setState({ ...state, password })}
             secureTextEntry
@@ -153,15 +131,15 @@ function EmailAuthScreen(props) {
             <Separator />
             <Title>
               {resetPassword
-                ? i18n.t("resetPasswordTitle")
-                : i18n.t("loginSignup")}
+                ? getLocaleString("resetPasswordTitle")
+                : getLocaleString("loginSignup")}
             </Title>
             <Separator />
             {!resetPassword && (
               <View>
                 <AuthInput
                   label="E-mail"
-                  placeholder={i18n.t("emailPlaceholder")}
+                  placeholder={getLocaleString("emailPlaceholder")}
                   value={email}
                   onChangeText={(email) => setState({ ...state, email })}
                   autoCapitalize="none"
@@ -174,8 +152,8 @@ function EmailAuthScreen(props) {
             {!resetPassword && (
               <View>
                 <AuthInput
-                  label={i18n.t("nameLabel")}
-                  placeholder={i18n.t("namePlaceholder")}
+                  label={getLocaleString("nameLabel")}
+                  placeholder={getLocaleString("namePlaceholder")}
                   value={name}
                   onChangeText={(text) => setState({ ...state, name: text })}
                   underlineColorAndroid="transparent"
@@ -187,7 +165,7 @@ function EmailAuthScreen(props) {
             {resetPassword && (
               <View>
                 <AuthInput
-                  label={i18n.t("resetTokenLabel")}
+                  label={getLocaleString("resetTokenLabel")}
                   value={resetToken}
                   onChangeText={(text) =>
                     setState({ ...state, resetToken: text })
@@ -199,8 +177,8 @@ function EmailAuthScreen(props) {
             )}
             <ScrollIntoView ref={(x) => (passwordInput = x)}>
               <AuthInput
-                label={i18n.t("passwordLabel")}
-                placeholder={i18n.t("passwordPlaceholder")}
+                label={getLocaleString("passwordLabel")}
+                placeholder={getLocaleString("passwordPlaceholder")}
                 value={state.password}
                 onChangeText={(password) => setState({ ...state, password })}
                 secureTextEntry
@@ -213,8 +191,8 @@ function EmailAuthScreen(props) {
                 <Separator />
 
                 <AuthInput
-                  label={i18n.t("confirmPasswordLabel")}
-                  placeholder={i18n.t("confirmPasswordLabel")}
+                  label={getLocaleString("confirmPasswordLabel")}
+                  placeholder={getLocaleString("confirmPasswordLabel")}
                   value={passwordConfirm}
                   onChangeText={(text) =>
                     setState({ ...state, passwordConfirm: text })
@@ -311,14 +289,14 @@ function EmailAuthScreen(props) {
       <BottomContainer forgotPassword={verify}>
         {verify && (
           <Button
-            title={i18n.t("forgotPasswordButton")}
+            title={getLocaleString("forgotPasswordButton")}
             onPress={() => goToForgotPassword()}
             outline
           />
         )}
         <Separator />
         <Button
-          title={i18n.t("topicQuestionContinueButton")}
+          title={getLocaleString("topicQuestionContinueButton")}
           onPress={() => submit()}
           loading={
             verify_email.fetching ||

@@ -3,22 +3,8 @@ import { Header } from "../../components";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LanguageActions from "../../state/redux/languages/LanguageRedux";
-import { I18n } from "i18n-js";
+import { useLocalization } from "@/context/LocalizationProvider";
 
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
-
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
 import {
   Container,
   Text,
@@ -44,19 +30,24 @@ function LanguageScreen(props) {
   //   this.forceUpdate();
   // };
 
+  const { getLocaleString, changeLocale, currentLocale } = useLocalization();
+
   const { back } = useRouter();
 
   return (
     <Container>
-      <Header title={i18n.t("languageHeader")} onPressLeft={() => back()} />
-      {/* <LanguageItem onPress={() => this.handleLocalizationChange("en")}>
-          <LanguageLabel>{i18n.t("english")}</LanguageLabel>
-          {language.selected == "en" && <CheckIcon />}
-        </LanguageItem>
-        <LanguageItem onPress={() => this.handleLocalizationChange("pt")}>
-          <LanguageLabel>{i18n.t("portuguese")}</LanguageLabel>
-          {language.selected == "pt" && <CheckIcon />}
-        </LanguageItem> */}
+      <Header
+        title={getLocaleString("languageHeader")}
+        onPressLeft={() => back()}
+      />
+      <LanguageItem onPress={() => changeLocale("en")}>
+        <LanguageLabel>{getLocaleString("english")}</LanguageLabel>
+        {currentLocale == "en" && <CheckIcon />}
+      </LanguageItem>
+      <LanguageItem onPress={() => changeLocale("pt")}>
+        <LanguageLabel>{getLocaleString("portuguese")}</LanguageLabel>
+        {currentLocale == "pt" && <CheckIcon />}
+      </LanguageItem>
     </Container>
   );
 }

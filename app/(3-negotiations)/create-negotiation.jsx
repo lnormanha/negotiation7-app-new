@@ -1,4 +1,16 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
+import { ScrollView, View } from "react-native";
+import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
+import { useRouter } from "expo-router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { FlatList } from "react-native-gesture-handler";
+
+import { useLocalization } from "@/context/LocalizationProvider";
+import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
+
+import { Header, Input, Button } from "../../components";
+
 import {
   Container,
   FolderImage,
@@ -9,31 +21,6 @@ import {
   TagLabel,
   AlignToBottom,
 } from "./CreateNegotiationScreenStyles";
-
-import { ScrollView, View } from "react-native";
-
-import { Header, Input, Button } from "../../components";
-
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
-import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
-
-import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
-import { FlatList } from "react-native-gesture-handler";
-
-import { I18n } from "i18n-js";
-
-import en from "../../translations/en.json";
-import pt from "../../translations/pt.json";
-import { useRouter } from "expo-router";
-
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
 
 const CustomScrollView = wrapScrollView(ScrollView);
 const options = {
@@ -48,6 +35,7 @@ const options = {
 
 function CreateNegotiationScreen(props) {
   const { negotiations, user } = props;
+  const { getLocaleString } = useLocalization();
 
   const initialState = {
     name: "",
@@ -101,7 +89,7 @@ function CreateNegotiationScreen(props) {
       <TagContainer>
         {negotiations.tags.length > 0 && (
           <View>
-            <ChooseTagLabel>{i18n.t("chooseTag")}</ChooseTagLabel>
+            <ChooseTagLabel>{getLocaleString("chooseTag")}</ChooseTagLabel>
             <FlatList
               data={negotiations.tags}
               renderItem={({ item }) => {
@@ -126,17 +114,17 @@ function CreateNegotiationScreen(props) {
               contentContainerStyle={{ paddingHorizontal: 30 }}
               showsHorizontalScrollIndicator={false}
             />
-            <ChooseTagLabel>{i18n.t("orTag")}</ChooseTagLabel>
+            <ChooseTagLabel>{getLocaleString("orTag")}</ChooseTagLabel>
           </View>
         )}
         <ScrollIntoView ref={(x) => (tagInput = x)}>
           <Input
-            placeholder={i18n.t("foldersPlaceholder")}
+            placeholder={getLocaleString("foldersPlaceholder")}
             onChangeText={(tag) =>
               setState({ ...state, tag, selectedTag: null })
             }
             value={tag}
-            name={i18n.t("foldersLabel")}
+            name={getLocaleString("foldersLabel")}
             underlineColorAndroid="transparent"
             onFocus={() => tagInput.scrollIntoView(options)}
           />
@@ -154,15 +142,15 @@ function CreateNegotiationScreen(props) {
   return (
     <Container>
       <Header
-        title={i18n.t("createNegotiationHeader")}
+        title={getLocaleString("createNegotiationHeader")}
         onPressLeft={() => back()}
       />
       <CustomScrollView>
         <FolderImage />
         <ScrollIntoView ref={(x) => (nameInput = x)}>
           <Input
-            placeholder={i18n.t("negotiationNamePlaceholder")}
-            name={i18n.t("negotiationNameLabel")}
+            placeholder={getLocaleString("negotiationNamePlaceholder")}
+            name={getLocaleString("negotiationNameLabel")}
             onChangeText={(name) => setState({ ...state, name })}
             value={name}
             onSubmitEditing={() => tagInput.scrollIntoView(options)}
@@ -178,7 +166,7 @@ function CreateNegotiationScreen(props) {
       </CustomScrollView>
 
       <Button
-        title={i18n.t("createNegotiationButton")}
+        title={getLocaleString("createNegotiationButton")}
         onPress={() => createNegotiation()}
         bottomMargin
         loading={negotiations.fetching}
