@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "negotiation7-app-new",
-    "slug": "negotiation7-app-new",
+    "slug": "negotiation-7",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/ic_launcher.png",
@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.negotiation70"
@@ -21,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.negotiation70"
     },
     "web": {
       "bundler": "metro",
@@ -38,11 +41,35 @@
       ]
     ],
     "extra": {
-      "oneSignalAppId": "1a344dce-5f8d-4643-9b05-4915626d3c08"
+      "oneSignalAppId": "1a344dce-5f8d-4643-9b05-4915626d3c08",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "OneSignalNotificationServiceExtension",
+                  "bundleIdentifier": "com.negotiation70.OneSignalNotificationServiceExtension",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.negotiation70.onesignal"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "projectId": "b7b5eb41-435c-4f58-91d2-df6bda0781f2"
+      }
     },
     "experiments": {
       "tsconfigPaths": true,
       "typedRoutes": true
-    }
+    },
+    "owner": "luiznormanha.dev"
   }
 }

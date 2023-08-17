@@ -1,11 +1,16 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { View } from "react-native";
-import { Link, router } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 // import { FadeInRight } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
+
+import NegotiationsActions, {
+  NegotiationsSelectors,
+} from "../../state/redux/negotiations/NegotiationsRedux";
+import UserActions, { UserSelectors } from "../../state/redux/user/UserRedux";
 
 import {
   Container,
@@ -27,6 +32,7 @@ import { I18n } from "i18n-js";
 
 import en from "../../translations/en.json";
 import pt from "../../translations/pt.json";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const translations = {
   en,
@@ -59,6 +65,8 @@ function LaunchScreen(props) {
     },
   ];
 
+  const { replace } = useRouter();
+
   const [slideData, setSlideData] = useState(slideDataValues);
   const [activeSlider, setActiveSlider] = useState(0);
 
@@ -70,6 +78,23 @@ function LaunchScreen(props) {
   const [autoPlay, setAutoPlay] = React.useState(false);
   const [autoPlayReverse, setAutoPlayReverse] = React.useState(false);
   const viewCount = 3;
+
+  function verifySession() {
+    AsyncStorage.getItem("user_id").then((res) => {
+      if (res) {
+        props.negotiationsListRequest(res);
+        props.userRequest(res);
+        setTimeout(() => {
+          replace("home");
+        }, 1000);
+      }
+    });
+  }
+
+  useEffect(() => {
+    verifySession();
+  }, []);
+
   return (
     <Container color={slideData[activeSlider].color}>
       <Carousel
@@ -136,7 +161,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({}, dispatch);
+  const { negotiationsListRequest } = NegotiationsActions;
+  const { userRequest } = UserActions;
+  return bindActionCreators({ userRequest, negotiationsListRequest }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LaunchScreen);

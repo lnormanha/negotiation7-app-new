@@ -33,6 +33,7 @@ i18n.locale = Localization.locale;
 i18n.enableFallback = true;
 
 export {
+  useRouter,
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
@@ -45,7 +46,7 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default function RootLayout(props: any) {
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     "Quicksand-Regular": require("../assets/fonts/Quicksand-Regular.ttf"),
@@ -55,22 +56,6 @@ export default function RootLayout() {
     "Quicksand-Light": require("../assets/fonts/Quicksand-Light.ttf"),
     ...FontAwesome.font,
   });
-
-  function verifySession() {
-    AsyncStorage.getItem("user_id").then((res) => {
-      // if (res) {
-      //   this.props.negotiationsListRequest(res);
-      //   this.props.userRequest(res);
-      //   setTimeout(() => {
-      //     this.props.navigation.replace({routeName: 'HomeScreen'});
-      //   }, 1000);
-      // } else {
-      //   setTimeout(() => {
-      //     this.props.navigation.replace({routeName: 'LaunchScreen'});
-      //   }, 1000);
-      // }
-    });
-  }
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
