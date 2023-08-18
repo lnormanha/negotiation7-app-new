@@ -13,7 +13,7 @@ export const Container = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 100px;
+  height: 110px;
   width: ${Metrics.screenWidth};
   background-color: ${(props) =>
     props.isHome ? Colors.headerBgHome : Colors.headerBg};

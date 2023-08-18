@@ -14,7 +14,7 @@ import {
   PreviewButton,
   PreviewLabel,
 } from "./HeaderStyle";
-import { Icons, Images } from "../../constants";
+import { Icons, Images, Colors } from "../../constants";
 
 interface HeaderProps {
   title: string;
@@ -110,7 +110,7 @@ export default function Header({
             {showRightButton && (
               <RightIcons
                 image={rightIcon}
-                tintiColor={isHome ? Colors.white : Colors.black}
+                tintColor={isHome ? Colors.white : Colors.black}
               ></RightIcons>
             )}
           </RightIconsArea>

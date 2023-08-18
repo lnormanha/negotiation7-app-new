@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Sharing from "expo-sharing";
 import * as Print from "expo-print";
+import * as FileSystem from "expo-file-system";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 
@@ -43,14 +44,14 @@ import {
   RemoveCoinLabel,
   RemoveCoinButton,
 } from "./ReportScreenStyles";
-import { Icons } from "../../constants";
+import { Icons, Colors } from "../../constants";
 
 function ReportScreen(props) {
   const { negotiations, user, language } = props;
   const { fetching, current, report } = negotiations;
   const { payload } = user;
 
-  const { getLocaleString } = useLocalization();
+  const { getLocaleString, currentLocale } = useLocalization();
 
   const initialState = {
     icons: [
@@ -69,54 +70,29 @@ function ReportScreen(props) {
   const [state, setState] = useState(initialState);
   const { push, back, replace } = useRouter();
 
-  async function createPDF() {
+  async function sharePDF() {
     let data = {
       report,
       name: user.payload.name,
-      locale: language.selected,
+      locale: currentLocale,
     };
 
     const html = mapToHtml(data);
 
-    console.log({ html });
-
     const { uri } = await Print.printToFileAsync({ html });
 
-    setState({ ...state, filePath: uri });
-    console.log("PDF Salvo com sucesso em: ", uri);
-  }
+    const pdfName = `${uri.slice(0, uri.lastIndexOf("/") + 1)}${getLocaleString(
+      "reportPdfName"
+    )}-${current.title}_${new Date(Date.now()).toDateString()}.pdf`;
 
-  async function sharePDF() {
-    await createPDF();
+    await FileSystem.moveAsync({
+      from: uri,
+      to: pdfName,
+    });
 
-    let filePath = `file://${state.filePath}`;
     let type = "application/pdf";
 
-    await Sharing.shareAsync(filePath, { UTI: ".pdf", mimeType: type });
-  }
-
-  async function requestStoragePermissionShare() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: "Permissão para armazenamento externo",
-          message:
-            "Negociação 7.0 precisa acessar seu armazenameto " +
-            "para salvar o relatório.",
-          buttonNeutral: "Perguntar depois",
-          buttonNegative: "Cancelar",
-          buttonPositive: "OK",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        sharePDF();
-      } else {
-        console.log("Storage permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
+    await Sharing.shareAsync(pdfName, { UTI: ".pdf", mimeType: type });
   }
 
   function goToQuestions(topic) {
@@ -350,14 +326,6 @@ function ReportScreen(props) {
         </TopicAnswersContainer>
       </View>
     );
-  }
-
-  function saveReport() {
-    if (Platform.OS == "ios") {
-      sharePDF();
-    } else {
-      requestStoragePermissionShare();
-    }
   }
 
   return (

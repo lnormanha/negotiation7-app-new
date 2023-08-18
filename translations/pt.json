@@ -80,6 +80,7 @@
   "tradablesTitleFlow": "Deseja adicionar outra moeda de troca?",
   "yes": "Sim",
   "no": "Não",
+  "reportPdfName": "NEGOCIAÇÃO_7.0-Relatório",
   "reportPdfTitle": "Relatório de Negociaçao 7.0",
   "reportFilledBy": "Preenchido por:",
   "reportFilledIn": "em",
@@ -141,5 +142,5 @@
   "resetPasswordTitle": "Insira o código recebido pelo e-mail junto com sua nova senha para finalizar o processo de recuperação de senha.",
   "confirmPasswordLabel": "Confirme a senha",
   "devByNetFly": "Desenvolvido por",
-  "expired": "Expirada",
+  "expired": "Expirada"
 }

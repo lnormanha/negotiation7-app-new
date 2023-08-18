@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { useRouter } from "expo-router";
 import * as Sharing from "expo-sharing";
 import * as Print from "expo-print";
+import * as FileSystem from "expo-file-system";
 
 import { useLocalization } from "@/context/LocalizationProvider";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
@@ -80,7 +81,7 @@ function NegotiationScreen(props) {
   function goToQuestions(topic) {
     props.negotiationTopicQuestionsRequest({
       id: topic.id,
-      language: props.language.selected,
+      language: currentLocale,
     });
     props.setCurrentTopic(topic);
     push("/topic");
@@ -89,35 +90,34 @@ function NegotiationScreen(props) {
   function goToReport() {
     props.negotiationReportRequest({
       id: current.id,
-      language: language.selected,
+      language: currentLocale,
     });
     push("/report");
   }
 
-  async function createPDF() {
+  async function sharePDF() {
     let data = {
       report,
       name: user.payload.name,
-      locale: language.selected,
+      locale: currentLocale,
     };
 
     const html = mapToHtml(data);
 
-    console.log({ html });
-
     const { uri } = await Print.printToFileAsync({ html });
 
-    setState({ ...state, filePath: uri });
-    console.log("PDF Salvo com sucesso em: ", uri);
-  }
+    const pdfName = `${uri.slice(0, uri.lastIndexOf("/") + 1)}${getLocaleString(
+      "reportPdfName"
+    )}-${current.title}_${new Date(Date.now()).toDateString()}.pdf`;
 
-  async function sharePDF() {
-    await createPDF();
+    await FileSystem.moveAsync({
+      from: uri,
+      to: pdfName,
+    });
 
-    let filePath = `file://${state.filePath}`;
     let type = "application/pdf";
 
-    await Sharing.shareAsync(filePath, { UTI: ".pdf", mimeType: type });
+    await Sharing.shareAsync(pdfName, { UTI: ".pdf", mimeType: type });
   }
 
   function getNegotiationProgress() {

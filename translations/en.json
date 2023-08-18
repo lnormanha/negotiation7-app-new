@@ -80,6 +80,7 @@
   "tradablesTitleFlow": "Do you want to add another tradable?",
   "yes": "Yes",
   "no": "No",
+  "reportPdfName": "NEGOTIATION_7.0-Report",
   "reportPdfTitle": "Negotiation 7.0 Report",
   "reportFilledBy": "Filled by:",
   "reportFilledIn": "in",
@@ -140,5 +141,5 @@
   "resetPasswordTitle": "Insert your recovery code received via e-mail and your new password to finish the password recovery process.",
   "confirmPasswordLabel": "Confirm password",
   "devByNetFly": "Developed by",
-  "expired": "Expired",
+  "expired": "Expired"
 }
