@@ -47,12 +47,18 @@ function EmailAuthScreen(props) {
   const [state, setState] = useState(initialState);
   const { login: loginProps, signup, verify_email, user } = props;
   const { push, back } = useRouter();
-  const { forgotPassword, verify, password, account, resetPassword, login } =
-    useGlobalSearchParams();
+  const {
+    forgotPassword,
+    verify,
+    password: passwordParam,
+    account,
+    resetPassword,
+    login,
+  } = useGlobalSearchParams();
+
+  const { email, name, passwordConfirm, resetToken, password } = state;
 
   function renderContent() {
-    let { email, name, passwordConfirm, resetToken } = state;
-
     if (verify || forgotPassword) {
       return (
         <Content>
@@ -105,10 +111,11 @@ function EmailAuthScreen(props) {
                 onFocus={() => passwordInput.scrollIntoView(options)}
               />
             </ScrollIntoView>
+            <Separator />
           </CustomScrollView>
         </Content>
       );
-    } else if (password) {
+    } else if (passwordParam) {
       return (
         <Content>
           <Separator />
@@ -220,12 +227,12 @@ function EmailAuthScreen(props) {
 
   function submit() {
     if (verify) {
-      let payload = { email: state.email };
+      let payload = { email };
       props.verifyEmailRequest(payload);
     } else if (forgotPassword) {
       const payload = {
         body: {
-          email: state.email,
+          email,
         },
       };
 
@@ -233,15 +240,14 @@ function EmailAuthScreen(props) {
     } else if (resetPassword) {
       const payload = {
         body: {
-          token: state.resetToken,
-          password: state.password,
-          passwordConfirmation: state.passwordConfirm,
+          token: resetToken,
+          password,
+          passwordConfirmation: passwordConfirm,
         },
       };
 
       props.userResetPasswordRequest(payload);
     } else if (login) {
-      let { email, password } = state;
       let body = {
         email,
         password,
@@ -252,13 +258,10 @@ function EmailAuthScreen(props) {
       props.loginRequest(payload);
     } else if (password) {
       const id = props.verify_email.payload.user.id;
-      let { password } = state;
       let body = { password };
       let payload = { id, body };
       props.userEditRequest(payload);
     } else {
-      let { email, name, password } = state;
-
       let body = {
         name,
         email,
@@ -304,15 +307,15 @@ function EmailAuthScreen(props) {
             loginProps.fetching ||
             user.fetching
           }
-          // disabled={
-          //   !forgotPassword
-          //     ? resetPassword
-          //       ? password.length < 6 &&
-          //         passwordConfirm !== password &&
-          //         !resetToken
-          //       : (!verify && password.length < 6) || !validateEmail()
-          //     : false
-          // }
+          disabled={
+            !forgotPassword
+              ? resetPassword
+                ? password.length < 6 &&
+                  passwordConfirm !== password &&
+                  !resetToken
+                : (!verify && password.length < 6) || !validateEmail()
+              : false
+          }
         />
       </BottomContainer>
       {/* <KeyboardSpacer /> */}

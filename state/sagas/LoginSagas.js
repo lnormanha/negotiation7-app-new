@@ -30,7 +30,7 @@ export function* login(api, action) {
 
       yield put(UserActions.userSuccess(response.data));
       AsyncStorage.setItem("user_id", response.data.id.toString());
-      yield put(router.push("home"));
+      router.push("home");
       // yield put(
       //   NavigationActions.navigate({
       //     routeName: "HomeScreen",

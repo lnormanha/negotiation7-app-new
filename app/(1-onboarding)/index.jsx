@@ -27,11 +27,12 @@ import {
 } from "./LaunchScreenStyles";
 
 import { Images, Colors, Metrics } from "../../constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function LaunchScreen(props) {
   const { getLocaleString, currentLocale } = useLocalization();
 
-  const slideDataValues = [
+  let slideDataValues = [
     {
       url: Images.onboard1,
       color: "#0A10BA",
@@ -63,7 +64,7 @@ function LaunchScreen(props) {
   const [pagingEnabled, setPagingEnabled] = React.useState(true);
   const [snapEnabled, setSnapEnabled] = React.useState(true);
   const [loop, setLoop] = React.useState(false);
-  const [autoPlay, setAutoPlay] = React.useState(false);
+  const [autoPlay, setAutoPlay] = React.useState(true);
   const [autoPlayReverse, setAutoPlayReverse] = React.useState(false);
   const viewCount = 3;
 
@@ -118,6 +119,7 @@ function LaunchScreen(props) {
         loop={loop}
         autoPlay={autoPlay}
         autoPlayReverse={autoPlayReverse}
+        autoPlayInterval={4000}
         data={slideData}
         modeConfig={{
           snapDirection,
@@ -142,10 +144,16 @@ function LaunchScreen(props) {
               }}
             >
               <SliderTopContainer>
-                <SliderImage image={item.url}></SliderImage>
+                <SliderImage
+                  image={`${Images[`onboard${index + 1}`]}`}
+                ></SliderImage>
               </SliderTopContainer>
-              <Title maxFontSizeMultiplier={1}>{item.title}</Title>
-              <SubTitle maxFontSizeMultiplier={1.0}>{item.text}</SubTitle>
+              <Title maxFontSizeMultiplier={1}>
+                {getLocaleString(`titleSlider${index}`)}
+              </Title>
+              <SubTitle maxFontSizeMultiplier={1.0}>
+                {getLocaleString(`textSlider${index}`)}
+              </SubTitle>
             </View>
 
             {index === 2 && (
@@ -156,6 +164,27 @@ function LaunchScreen(props) {
           </View>
         )}
       />
+      <View
+        style={{
+          position: "absolute",
+          flexDirection: "row",
+          bottom: 16,
+          width: "50%",
+          justifyContent: "space-around",
+          alignSelf: "center",
+        }}
+      >
+        {slideData.map((pagination, index) => (
+          <View
+            style={{
+              height: 16,
+              width: 16,
+              borderRadius: 16,
+              backgroundColor: index === activeSlider ? "#3366bb" : "#fff",
+            }}
+          />
+        ))}
+      </View>
     </Container>
   );
 }

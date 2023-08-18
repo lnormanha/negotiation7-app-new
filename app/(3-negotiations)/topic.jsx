@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
 import { useRouter } from "expo-router";
 
+import { useLocalization } from "@/context/LocalizationProvider";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 
 import { Header, Button } from "../../components";

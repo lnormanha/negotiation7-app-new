@@ -1,5 +1,11 @@
-import styled from 'styled-components/native';
-import {Colors, Metrics, Fonts, ApplicationStyles, Icons} from '../../constants';
+import styled from "styled-components/native";
+import {
+  Colors,
+  Metrics,
+  Fonts,
+  ApplicationStyles,
+  Icons,
+} from "../../constants";
 
 export const Container = styled.View`
   ${ApplicationStyles.screen.container};
@@ -53,7 +59,7 @@ export const SubInfoContent = styled.View`
 `;
 
 export const TripsCopyright = styled.Text`
-  font-size: ${Fonts.size.input};
+  font-size: ${Fonts.size.medium};
   font-family: ${Fonts.type.base};
   color: ${Colors.white};
 `;
@@ -91,7 +97,7 @@ export const OptionLabel = styled.Text`
   margin-left: 30px;
 `;
 
-export const OptionIcon = styled.Image.attrs(props => ({
+export const OptionIcon = styled.Image.attrs((props) => ({
   source: Icons.chevron_right,
 }))`
   height: 20px;
@@ -114,7 +120,7 @@ export const ProgressContainer = styled.View`
 export const Progress = styled.View`
   height: 20px;
   background-color: deepskyblue;
-  width: ${props => props.width}%;
+  width: ${(props) => props.width}%;
   border-radius: 10px;
 `;
 
