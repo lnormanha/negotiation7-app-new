@@ -98,15 +98,16 @@ function ProfileScreen(props) {
             alignItems: "center",
             paddingVertical: 24,
             marginVertical: 30,
-            backgroundColor: "#017cba",
+            backgroundColor: "#141925",
           }}
         >
           <TripsCopyright>{getLocaleString("devByNetFly")}</TripsCopyright>
           <Image
-            source={Images.logo_netfly}
-            style={{ width: 256, height: 256 }}
+            source={require("../../assets/images/ln-dev-logo-transparent.png")}
+            style={{ width: "50%", height: 150 }}
             resizeMode="contain"
           />
+          <TripsCopyright>luiznormanha.dev</TripsCopyright>
           <TripsCopyright>v2.0.0 - 2023 ©</TripsCopyright>
         </View>
       </ScrollView>

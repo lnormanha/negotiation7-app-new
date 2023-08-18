@@ -107,7 +107,12 @@ export default function Header({
         <Title>{title}</Title>
         <RightIconsContainer>
           <RightIconsArea onPress={onPressRight}>
-            {showRightButton && <RightIcons image={rightIcon}></RightIcons>}
+            {showRightButton && (
+              <RightIcons
+                image={rightIcon}
+                tintiColor={isHome ? Colors.white : Colors.black}
+              ></RightIcons>
+            )}
           </RightIconsArea>
         </RightIconsContainer>
       </Container>

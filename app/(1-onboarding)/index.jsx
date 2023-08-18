@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import { Link, router, useRouter } from "expo-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -29,7 +29,7 @@ import {
 import { Images, Colors, Metrics } from "../../constants";
 
 function LaunchScreen(props) {
-  const { getLocaleString } = useLocalization();
+  const { getLocaleString, currentLocale } = useLocalization();
 
   const slideDataValues = [
     {
@@ -54,6 +54,7 @@ function LaunchScreen(props) {
 
   const { replace } = useRouter();
 
+  const [hasVerifiedUser, setHasVerifiedUser] = useState(false);
   const [slideData, setSlideData] = useState(slideDataValues);
   const [activeSlider, setActiveSlider] = useState(0);
 
@@ -72,8 +73,11 @@ function LaunchScreen(props) {
         props.negotiationsListRequest(res);
         props.userRequest(res);
         setTimeout(() => {
+          setHasVerifiedUser(true);
           replace("home");
         }, 1000);
+      } else {
+        setHasVerifiedUser(true);
       }
     });
   }
@@ -81,6 +85,21 @@ function LaunchScreen(props) {
   useEffect(() => {
     verifySession();
   }, []);
+
+  if (!hasVerifiedUser)
+    return (
+      <Container color="#0A10BA">
+        <Image
+          source={
+            currentLocale === "en"
+              ? require("../../assets/images/launch_screen_en.png")
+              : require("../../assets/images/launch_screen.png")
+          }
+          style={{ width: "100%", height: "100%" }}
+          resizeMode="contain"
+        />
+      </Container>
+    );
 
   return (
     <Container color={slideData[activeSlider].color}>

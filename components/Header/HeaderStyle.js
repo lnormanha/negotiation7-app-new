@@ -68,7 +68,7 @@ export const RightIconsContainer = styled.View`
 export const RightIcons = styled.Image.attrs((prop) => ({
   source: prop.image,
   resizeMode: "contain",
-  tintColor: Colors.black,
+  tintColor: prop.tintColor,
 }))`
   height: 30px;
   width: 30px;
