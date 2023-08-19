@@ -29,18 +29,16 @@ export function* verifyEmail(api, action) {
       const { data } = response;
       // You might need to change the response here - do this with a 'transform',
       // located in ../Transforms/. Otherwise, just pass the data back from the api.
-      yield put(VerifyEmailActions.verifyEmailSuccess(response.data));
 
       if (data.have_password) {
         console.warn("HAVE PASSWORD");
         router.push("email-auth?login=true");
+        yield put(VerifyEmailActions.verifyEmailSuccess(response.data));
       } else {
-        yield put(router.push("email-auth?password=true"));
+        router.push("email-auth?password=true");
       }
     } else {
-      yield put(
-        router.push(`email-auth?account=true&email=${action.data.email}`)
-      );
+      router.push(`email-auth?account=true&email=${action.data.email}`);
 
       yield put(VerifyEmailActions.verifyEmailFailure());
     }

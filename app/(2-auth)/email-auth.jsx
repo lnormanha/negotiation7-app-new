@@ -78,6 +78,7 @@ function EmailAuthScreen(props) {
             keyboardType="email-address"
             underlineColorAndroid="transparent"
           />
+          <Separator />
         </Content>
       );
     } else if (login) {
@@ -129,6 +130,7 @@ function EmailAuthScreen(props) {
             secureTextEntry
             underlineColorAndroid="transparent"
           />
+          <Separator />
         </Content>
       );
     } else {
@@ -210,6 +212,7 @@ function EmailAuthScreen(props) {
                 />
               </ScrollIntoView>
             )}
+            <Separator />
           </CustomScrollView>
         </Content>
       );
@@ -256,7 +259,7 @@ function EmailAuthScreen(props) {
         body,
       };
       props.loginRequest(payload);
-    } else if (password) {
+    } else if (passwordParam) {
       const id = props.verify_email.payload.user.id;
       let body = { password };
       let payload = { id, body };

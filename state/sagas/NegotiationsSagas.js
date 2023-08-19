@@ -127,7 +127,7 @@ export function* createNegotiation(api, action) {
       );
       console.log({ negoRes: response.data });
 
-      yield put(router.push("negotiation"));
+      router.push("negotiation");
       // yield put(
       //   NavigationActions.navigate({
       //     routeName: "NegotiationScreen",
@@ -168,7 +168,7 @@ export function* removeNegotiation(api, action) {
       yield put(NegotiationsActions.negotiationRemoveSuccess(response.data));
       yield put(NegotiationsActions.negotiationsListRequest(data.user_id));
       yield put(NegotiationsActions.negotiationsTagsRequest(data.user_id));
-      yield put(NavigationActions.back({ key: "Home" }));
+      router.replace("home");
     } else {
       Alert.alert(response.data.message);
       yield put(NegotiationsActions.negotiationRemoveFailure());
@@ -199,7 +199,7 @@ export function* sendAnswers(api, action) {
         NegotiationsActions.negotiationSendAnswersSuccess(response.data)
       );
       if (current_topic.id == 8) {
-        yield put(NavigationActions.back());
+        router.back();
         yield put(
           NegotiationsActions.negotiationTopicsRequest({
             id: current.id,
@@ -276,7 +276,7 @@ export function* editAnswers(api, action) {
         NegotiationsActions.negotiationEditAnswersSuccess(response.data)
       );
       if (current_topic.id == 8) {
-        yield put(NavigationActions.back());
+        router.back();
         yield put(
           NegotiationsActions.negotiationTopicsRequest({
             id: current.id,

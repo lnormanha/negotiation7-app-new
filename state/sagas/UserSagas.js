@@ -32,13 +32,7 @@ export function* editUser(api, action) {
       yield put(UserActions.userRequest(data.id));
       yield put(VerifyEmailActions.verifyEmailFailure());
 
-      yield put(router.push("home"));
-      // yield put(
-      //   NavigationActions.navigate({
-      //     routeName: "HomeScreen",
-      //     key: "LoginVerify",
-      //   })
-      // );
+      router.push("home");
     } else {
       Alert.alert(response.data.message);
       yield put(UserActions.userEditFailure());
@@ -54,12 +48,8 @@ export function* forgotPasswordRequest(api, action) {
   try {
     const response = yield call(api.forgotPassword, data);
     if (response.ok) {
-      yield put(
-        StackActions.push({
-          routeName: "EmailAuthScreen",
-          params: { resetPassword: true },
-        })
-      );
+      router.push("/email-auth?resetPassword=true");
+
       yield put(UserActions.userForgotPasswordSuccess());
     } else {
       Alert.alert(response.data.message);
@@ -77,7 +67,7 @@ export function* resetPasswordRequest(api, action) {
     const response = yield call(api.resetPassword, data);
     if (response.ok) {
       Alert.alert("Senha recuperada com sucesso!");
-      yield put(router.push("login"));
+      router.push("login");
 
       // yield put(
       //   StackActions.pop({

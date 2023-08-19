@@ -20,11 +20,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/ic_launcher.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.negotiation70",
-      "versionCode": 200
+      "versionCode": 2001
     },
     "web": {
       "bundler": "metro",

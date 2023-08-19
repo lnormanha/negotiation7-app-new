@@ -31,12 +31,6 @@ export function* login(api, action) {
       yield put(UserActions.userSuccess(response.data));
       AsyncStorage.setItem("user_id", response.data.id.toString());
       router.push("home");
-      // yield put(
-      //   NavigationActions.navigate({
-      //     routeName: "HomeScreen",
-      //     key: "LoginVerify",
-      //   })
-      // );
     } else {
       Alert.alert(response.data.message);
       yield put(LoginActions.loginFailure());

@@ -1,5 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import { Alert } from "react-native";
+import NegotiationsActions from "../redux/negotiations/NegotiationsRedux";
 import SignUpActions from "../redux/sign-up/SignUpRedux";
 import UserActions from "../redux/user/UserRedux";
 import { router } from "expo-router";
@@ -14,7 +15,7 @@ export function* signUp(api, action) {
       yield put(SignUpActions.signUpSuccess(response.data));
       yield put(NegotiationsActions.negotiationsTagsRequest(response.data.id));
       yield put(UserActions.userRequest(response.data.id));
-      yield put(router.push("home"));
+      router.push("home");
     } else {
       yield put(Alert.alert(response.data.message));
       yield put(SignUpActions.signUpFailure());
