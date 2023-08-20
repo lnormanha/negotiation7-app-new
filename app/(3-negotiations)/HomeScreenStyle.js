@@ -1,9 +1,9 @@
 import styled from "styled-components/native";
 import { Colors, Metrics, Fonts, Icons } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   flex: 1;
-  background-color: ${Colors.background};
 `;
 
 export const SubInfoArea = styled.View`

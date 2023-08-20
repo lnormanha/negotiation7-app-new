@@ -1,10 +1,11 @@
-import styled from 'styled-components/native';
-import {Colors, Metrics, Fonts, ApplicationStyles} from '../../constants';
+import styled from "styled-components/native";
+import { Colors, Metrics, Fonts, ApplicationStyles } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // const withForgotPassContainer = isIphoneX() ? 200 : 170;
 // const normalContainer = isIphoneX() ? 150 : 120;
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   ${ApplicationStyles.screen.container};
 `;
 export const Content = styled.View`

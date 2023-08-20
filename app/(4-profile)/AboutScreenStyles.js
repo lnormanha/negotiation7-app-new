@@ -1,7 +1,8 @@
 import styled from "styled-components/native";
 import { Colors, Metrics, Fonts, ApplicationStyles } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   ${ApplicationStyles.screen.container};
 `;
 export const Title = styled.Text`

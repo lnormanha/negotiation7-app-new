@@ -13,11 +13,11 @@ export const Container = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 110px;
+  height: 100px;
   width: ${Metrics.screenWidth};
   background-color: ${(props) =>
     props.isHome ? Colors.headerBgHome : Colors.headerBg};
-  padding-top: 0px;
+  padding-bottom: 12px;
   justify-content: space-between;
 `;
 

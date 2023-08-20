@@ -1,7 +1,8 @@
 import styled from "styled-components/native";
 import { Colors, Metrics, Fonts, ApplicationStyles } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   ${ApplicationStyles.screen.container};
 `;
 
@@ -60,8 +61,8 @@ export const TopicHeader = styled.TouchableOpacity`
   margin-left: 20px;
 `;
 
-export const TopicHeaderIcon = styled.Image.attrs(props => ({
-  source: props.icon
+export const TopicHeaderIcon = styled.Image.attrs((props) => ({
+  source: props.icon,
 }))`
   margin-right: 10px;
 `;
@@ -96,7 +97,7 @@ export const TopicAnswerHeader = styled.View`
   width: 49.8%;
   height: 38px;
   justify-content: center;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.leftPos ? "#03053b1a" : "rgba(3, 5, 59, 0.2)"};
 `;
 
@@ -140,7 +141,7 @@ export const TradeCoinQuestionContainer = styled.View`
   width: 100%;
   justify-content: center;
   background-color: ${Colors.white};
-  border-bottom-width: ${props => (!props.lastIndex ? 0.5 : 0)}px;
+  border-bottom-width: ${(props) => (!props.lastIndex ? 0.5 : 0)}px;
   border-color: #03053b1a;
   padding: 20px 20px 20px 20px;
   justify-content: center;

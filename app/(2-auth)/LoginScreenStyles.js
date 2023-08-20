@@ -6,10 +6,10 @@ import {
   ApplicationStyles,
   Images,
 } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   flex: 1;
-  background-color: ${Colors.white};
 `;
 
 export const LoginTop = styled.Image.attrs((props) => ({

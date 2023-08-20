@@ -4,10 +4,11 @@ import {
   Metrics,
   Fonts,
   ApplicationStyles,
-  Icons
+  Icons,
 } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   ${ApplicationStyles.screen.container};
 `;
 export const Text = styled.Text`
@@ -33,9 +34,9 @@ export const LanguageLabel = styled.Text`
   margin-left: 30px;
 `;
 
-export const CheckIcon = styled.Image.attrs(props => ({
+export const CheckIcon = styled.Image.attrs((props) => ({
   source: Icons.check,
-  resizeMode: "contain"
+  resizeMode: "contain",
 }))`
   height: 30px;
   width: 30px;

@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.negotiation70",
-      "versionCode": 2001
+      "versionCode": 2002
     },
     "web": {
       "bundler": "metro",

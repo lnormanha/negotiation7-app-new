@@ -2,10 +2,10 @@ import styled from "styled-components/native";
 import { Colors, Metrics, Fonts, ApplicationStyles } from "../../constants";
 
 import * as Animatable from "react-native-animatable";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   ${ApplicationStyles.screen.container};
-  background-color: ${Colors.background};
 `;
 
 export const QuestionsContainer = styled.View`

@@ -7,11 +7,11 @@ import {
   Icons,
   Images,
 } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   ${ApplicationStyles.screen.container};
   align-items: center;
-  background-color: #fca542;
 `;
 
 export const Content = styled.View`

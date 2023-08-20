@@ -1,6 +1,7 @@
 import styled from "styled-components/native";
 // import Carousel, { Pagination } from "react-native-snap-carousel";
 import { Metrics, Colors, Fonts } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // import {
 //   isIphoneX,
@@ -8,10 +9,9 @@ import { Metrics, Colors, Fonts } from "../../constants";
 //   getStatusBarHeight
 // } from "react-native-iphone-x-helper";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   flex: 1;
   background-color: ${(props) => props.color};
-  heigth: 100%;
 `;
 
 export const AlignerTop = styled.View`

@@ -1,7 +1,8 @@
 import styled from "styled-components/native";
 import { Images, Fonts, Colors } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   flex: 1;
   background-color: ${Colors.background};
 `;
@@ -44,8 +45,8 @@ export const TextButtonCreate = styled.Text`
   margin-bottom: 20px;
 `;
 
-export const FolderImage = styled.Image.attrs(props => ({
-  source: Images.folder
+export const FolderImage = styled.Image.attrs((props) => ({
+  source: Images.folder,
 }))`
   margin-top: 20px;
   margin-bottom: 40px;
@@ -74,16 +75,16 @@ export const Tag = styled.TouchableOpacity`
   margin-right: 10px;
   align-items: center;
   justify-content: center;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.selected ? Colors.buttonBg : Colors.white};
   border-radius: 5px;
   border-width: 0.2px;
-  border-color: ${props => (props.selected ? Colors.white : Colors.buttonBg)};
+  border-color: ${(props) => (props.selected ? Colors.white : Colors.buttonBg)};
 `;
 
 export const TagLabel = styled.Text`
   font-family: ${Fonts.type.medium};
-  color: ${props => (props.selected ? Colors.white : Colors.buttonBg)};
+  color: ${(props) => (props.selected ? Colors.white : Colors.buttonBg)};
   font-size: ${Fonts.size.input};
 `;
 
