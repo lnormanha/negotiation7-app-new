@@ -12,9 +12,12 @@
         "buildType": "apk"
       }
     },
-    "release": {
+    "production": {
       "android": {
         "gradleCommand": ":app:assembleRelease"
+      },
+      "ios": {
+        "simulator": false
       }
     }
   },
@@ -23,6 +26,10 @@
       "android": {
         "serviceAccountKeyPath": "./google-play-negotiation7-api-key.json",
         "track": "internal"
+      },
+      "ios": {
+        "appleId": "negotiation7app@gmail.com",
+        "ascAppId": "1488937904"
       }
     }
   }
