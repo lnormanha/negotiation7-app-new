@@ -97,7 +97,7 @@ export const ViewButton = styled.TouchableOpacity`
   margin-top: 10px;
   align-items: center;
   align-self: center;
-  justify-content: space-evenly;
+  justify-content: center;
   border-radius: 5px;
   background-color: ${(props) =>
     props.disabled ? Colors.charcoal : Colors.headerBgHome};

@@ -296,7 +296,10 @@ function HomeScreen(props: any) {
       )}
 
       <BottomContainer>
-        <ViewButton onPress={() => push("/create-negotiation")}>
+        <ViewButton
+          style={{ gap: 16 }}
+          onPress={() => push("/create-negotiation")}
+        >
           <TextButton>{getLocaleString("createNewNegotiation")}</TextButton>
           <AddButton>
             <AddIcon />

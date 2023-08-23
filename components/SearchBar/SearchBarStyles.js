@@ -3,7 +3,7 @@ import { Colors, Metrics, Fonts, Icons } from "../../constants";
 
 export const Container = styled.View`
   display: flex;
-  width: 330px;
+  width: 95%;
   height: 50px;
   flex-direction: row;
   align-items: center;
@@ -15,8 +15,8 @@ export const Container = styled.View`
   box-shadow: 0px 0px 2px gray;
 `;
 
-export const Icon = styled.Image.attrs(props => ({
-  source: Icons.search
+export const Icon = styled.Image.attrs((props) => ({
+  source: Icons.search,
 }))`
   width: 20px;
   height: 20px;

@@ -57,6 +57,7 @@ export const SliderImage = styled.Image.attrs((props) => ({
   resizeMode: "contain",
 }))`
   width: ${Metrics.screenWidth};
+  height: 100%;
 `;
 
 // export const SliderPagination = styled(Pagination).attrs(props => ({

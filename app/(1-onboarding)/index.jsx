@@ -168,7 +168,7 @@ function LaunchScreen(props) {
         style={{
           position: "absolute",
           flexDirection: "row",
-          bottom: 16,
+          bottom: 32,
           width: "50%",
           justifyContent: "space-around",
           alignSelf: "center",
