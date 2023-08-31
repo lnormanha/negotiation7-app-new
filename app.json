@@ -2,7 +2,7 @@
   "expo": {
     "name": "Negotiation 7.0",
     "slug": "negotiation-7",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/ic_launcher.png",
     "scheme": "negotiation7",
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.negotiation70",
-      "buildNumber": "2"
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.negotiation70",
-      "versionCode": 2003
+      "versionCode": 2010
     },
     "web": {
       "bundler": "metro",
