@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { getLocales } from "expo-localization";
+import { locale } from "expo-localization";
 import { I18n } from "i18n-js";
 
 import en from "../translations/en.json";
@@ -14,11 +14,11 @@ import pt from "../translations/pt.json";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const translations = {
-  en,
-  pt,
+  "en-US": en,
+  "pt-BR": pt,
 };
 
-type LocalizationProvierProps<T> = {
+type LocalizationProviderProps<T> = {
   children: T;
 };
 
@@ -32,15 +32,19 @@ const LocalizationContext = createContext({} as LocalizationContextProps);
 
 function LocalizationProvider({
   children,
-}: LocalizationProvierProps<ReactNode>) {
+}: LocalizationProviderProps<ReactNode>) {
   const [i18n, setI18n] = useState(new I18n(translations));
 
-  const [currentLocale, setCurrentLocale] = useState(i18n.locale);
+  console.log({ locale });
+
+  const [currentLocale, setCurrentLocale] = useState(locale);
 
   useEffect(() => {
     AsyncStorage.getItem("language").then((res) => {
       if (res != null) {
         changeLocale(res);
+      } else {
+        i18n.locale = locale;
       }
     });
   }, []);

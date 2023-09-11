@@ -24,11 +24,11 @@ function LanguageScreen() {
         title={getLocaleString("languageHeader")}
         onPressLeft={() => back()}
       />
-      <LanguageItem onPress={() => changeLocale("en")}>
+      <LanguageItem onPress={() => changeLocale("en-US")}>
         <LanguageLabel>{getLocaleString("english")}</LanguageLabel>
         {currentLocale == "en" && <CheckIcon />}
       </LanguageItem>
-      <LanguageItem onPress={() => changeLocale("pt")}>
+      <LanguageItem onPress={() => changeLocale("pt-BR")}>
         <LanguageLabel>{getLocaleString("portuguese")}</LanguageLabel>
         {currentLocale == "pt" && <CheckIcon />}
       </LanguageItem>

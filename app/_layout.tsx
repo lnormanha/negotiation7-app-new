@@ -25,15 +25,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const store = createStore();
 
-const translations = {
-  en,
-  pt,
-};
-
-const i18n = new I18n(translations);
-i18n.locale = Localization.locale;
-i18n.enableFallback = true;
-
 export {
   useRouter,
   // Catch any errors thrown by the Layout component.
