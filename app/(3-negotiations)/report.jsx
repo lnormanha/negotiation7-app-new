@@ -16,7 +16,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 
 import { useLocalization } from "@/context/LocalizationProvider";
-import { mapToHtml } from "../../services/CreatePDFReport";
+import { useCreatePDF } from "../../hooks/useCreatePDF";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 
 import {
@@ -52,6 +52,7 @@ function ReportScreen(props) {
   const { payload } = user;
 
   const { getLocaleString, currentLocale } = useLocalization();
+  const { mapToHtml } = useCreatePDF();
 
   const initialState = {
     icons: [
@@ -74,7 +75,6 @@ function ReportScreen(props) {
     let data = {
       report,
       name: user.payload.name,
-      locale: currentLocale,
     };
 
     const html = mapToHtml(data);

@@ -9,7 +9,6 @@ import * as FileSystem from "expo-file-system";
 
 import { useLocalization } from "@/context/LocalizationProvider";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
-import { mapToHtml } from "../../services/CreatePDFReport";
 
 import { Header, Modal } from "../../components";
 
@@ -39,6 +38,7 @@ import {
   NegotiationProgressBar,
 } from "./NegotiationScreenStyles";
 import { Icons, Colors } from "../../constants";
+import { useCreatePDF } from "../../hooks/useCreatePDF";
 
 function NegotiationScreen(props) {
   const initialState = {
@@ -58,6 +58,7 @@ function NegotiationScreen(props) {
 
   const [state, setState] = useState(initialState);
   const { getLocaleString, currentLocale } = useLocalization();
+  const { mapToHtml } = useCreatePDF();
 
   const { negotiations, user, subscription, language } = props;
 
@@ -70,6 +71,8 @@ function NegotiationScreen(props) {
   useEffect(() => {
     getNegotiationProgress();
   }, [negotiations]);
+
+  console.log({ currentLocale });
 
   const convertDate = (date) => {
     let day = date.substring(8, 10);
@@ -99,7 +102,6 @@ function NegotiationScreen(props) {
     let data = {
       report,
       name: user.payload.name,
-      locale: currentLocale,
     };
 
     const html = mapToHtml(data);

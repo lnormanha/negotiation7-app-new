@@ -14,8 +14,8 @@ import pt from "../translations/pt.json";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const translations = {
-  "en-US": en,
-  "pt-BR": pt,
+  en: en,
+  pt: pt,
 };
 
 type LocalizationProviderProps<T> = {
@@ -34,17 +34,16 @@ function LocalizationProvider({
   children,
 }: LocalizationProviderProps<ReactNode>) {
   const [i18n, setI18n] = useState(new I18n(translations));
+  const convertedLocale = locale === "en-US" ? "en" : "pt";
 
-  console.log({ locale });
-
-  const [currentLocale, setCurrentLocale] = useState(locale);
+  const [currentLocale, setCurrentLocale] = useState(convertedLocale);
 
   useEffect(() => {
     AsyncStorage.getItem("language").then((res) => {
       if (res != null) {
         changeLocale(res);
       } else {
-        i18n.locale = locale;
+        i18n.locale = convertedLocale;
       }
     });
   }, []);
