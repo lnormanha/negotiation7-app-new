@@ -83,7 +83,9 @@ function ReportScreen(props) {
 
     const pdfName = `${uri.slice(0, uri.lastIndexOf("/") + 1)}${getLocaleString(
       "reportPdfName"
-    )}-${current.title}_${new Date(Date.now()).toDateString()}.pdf`;
+    )}-${current.title}-${current.created_at}.pdf`;
+
+    console.log({ pdfName });
 
     await FileSystem.moveAsync({
       from: uri,
