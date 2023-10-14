@@ -9,7 +9,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { useLocalization } from "@/context/LocalizationProvider";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 
-import { Header, Input, Button } from "../../components";
+import { Header, Input, Button, KeyboardSpacer } from "../../components";
 
 import {
   Container,
@@ -162,7 +162,7 @@ function CreateNegotiationScreen(props) {
         <InputMargin />
         {renderTagOptions()}
         <AlignToBottom />
-        {/* <KeyboardSpacer /> */}
+        <KeyboardSpacer />
       </CustomScrollView>
 
       <Button

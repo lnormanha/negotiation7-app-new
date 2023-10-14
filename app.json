@@ -2,7 +2,7 @@
   "expo": {
     "name": "Negotiation 7.0",
     "slug": "negotiation-7",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/ic_launcher.png",
     "scheme": "negotiation7",
@@ -12,13 +12,11 @@
       "resizeMode": "cover",
       "backgroundColor": "#0A10BA"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.negotiation70",
-      "buildNumber": "1"
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.negotiation70",
-      "versionCode": 2010
+      "versionCode": 2021
     },
     "web": {
       "bundler": "metro",

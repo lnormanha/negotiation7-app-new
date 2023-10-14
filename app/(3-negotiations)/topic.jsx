@@ -8,7 +8,7 @@ import { useRouter } from "expo-router";
 import { useLocalization } from "@/context/LocalizationProvider";
 import NegotiationsActions from "../../state/redux/negotiations/NegotiationsRedux";
 
-import { Header, Button } from "../../components";
+import { Header, Button, KeyboardSpacer } from "../../components";
 import {
   Container,
   QuestionsContainer,
@@ -319,6 +319,7 @@ function TopicScreen(props) {
           ref={(slider) => (sliderRef = slider)}
         />
       </TopicSliderArea>
+
       <CustomScrollView>
         <TopMargin />
         {askNextCoin ? renderAskCoin() : renderQuestionsContent()}
@@ -341,7 +342,7 @@ function TopicScreen(props) {
           />
         </BottomContainer>
       )}
-      {/* <KeyboardSpacer topSpacing={0} /> */}
+      <KeyboardSpacer />
     </Container>
   );
 }

@@ -11,7 +11,7 @@ import LoginActions from "../../state/redux/login/LoginRedux";
 import SignUpActions from "../../state/redux/sign-up/SignUpRedux";
 import UserActions from "../../state/redux/user/UserRedux";
 
-import { Header, AuthInput, Button } from "../../components";
+import { Header, AuthInput, Button, KeyboardSpacer } from "../../components";
 
 import {
   Container,
@@ -321,7 +321,7 @@ function EmailAuthScreen(props) {
           }
         />
       </BottomContainer>
-      {/* <KeyboardSpacer /> */}
+      <KeyboardSpacer />
     </Container>
   );
 }

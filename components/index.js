@@ -8,6 +8,7 @@ import FullButton from "./FullButton";
 import GoogleButton from "./GoogleButton";
 import TagCard from "./TagCard";
 import Modal from "./Modal";
+import { KeyboardSpacer } from "./KeyboardSpacer";
 
 export {
   Header,
@@ -19,5 +20,6 @@ export {
   GoogleButton,
   Search,
   TagCard,
-  Modal
+  Modal,
+  KeyboardSpacer,
 };
