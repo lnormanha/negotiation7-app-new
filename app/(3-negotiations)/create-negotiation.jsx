@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, ScrollView, View } from "react-native";
 import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
 import { useRouter } from "expo-router";
 import { connect } from "react-redux";
@@ -141,37 +141,39 @@ function CreateNegotiationScreen(props) {
 
   return (
     <Container>
-      <Header
-        title={getLocaleString("createNegotiationHeader")}
-        onPressLeft={() => back()}
-      />
-      <CustomScrollView>
-        <FolderImage />
-        <ScrollIntoView ref={(x) => (nameInput = x)}>
-          <Input
-            placeholder={getLocaleString("negotiationNamePlaceholder")}
-            name={getLocaleString("negotiationNameLabel")}
-            onChangeText={(name) => setState({ ...state, name })}
-            value={name}
-            onSubmitEditing={() => tagInput.scrollIntoView(options)}
-            onFocus={() => nameInput.scrollIntoView(options)}
-            underlineColorAndroid="transparent"
-          />
-        </ScrollIntoView>
+      <KeyboardAvoidingView behavior="position">
+        <Header
+          title={getLocaleString("createNegotiationHeader")}
+          onPressLeft={() => back()}
+        />
+        <CustomScrollView>
+          <FolderImage />
+          <ScrollIntoView ref={(x) => (nameInput = x)}>
+            <Input
+              placeholder={getLocaleString("negotiationNamePlaceholder")}
+              name={getLocaleString("negotiationNameLabel")}
+              onChangeText={(name) => setState({ ...state, name })}
+              value={name}
+              onSubmitEditing={() => tagInput.scrollIntoView(options)}
+              onFocus={() => nameInput.scrollIntoView(options)}
+              underlineColorAndroid="transparent"
+            />
+          </ScrollIntoView>
 
-        <InputMargin />
-        {renderTagOptions()}
-        <AlignToBottom />
-        <KeyboardSpacer />
-      </CustomScrollView>
+          <InputMargin />
+          {renderTagOptions()}
+          <AlignToBottom />
+          {/* <KeyboardSpacer /> */}
+        </CustomScrollView>
 
-      <Button
-        title={getLocaleString("createNegotiationButton")}
-        onPress={() => createNegotiation()}
-        bottomMargin
-        loading={negotiations.fetching}
-        disabled={disableButton() || negotiations.fetching}
-      />
+        <Button
+          title={getLocaleString("createNegotiationButton")}
+          onPress={() => createNegotiation()}
+          bottomMargin
+          loading={negotiations.fetching}
+          disabled={disableButton() || negotiations.fetching}
+        />
+      </KeyboardAvoidingView>
     </Container>
   );
 }

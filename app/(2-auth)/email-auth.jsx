@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useGlobalSearchParams, useRouter } from "expo-router";
@@ -290,38 +290,39 @@ function EmailAuthScreen(props) {
 
   return (
     <Container>
-      <Header title="" onPressLeft={() => back()} />
-      {renderContent()}
-      <BottomContainer forgotPassword={verify}>
-        {verify && (
+      <KeyboardAvoidingView>
+        <Header title="" onPressLeft={() => back()} />
+        {renderContent()}
+        <BottomContainer forgotPassword={verify}>
+          {verify && (
+            <Button
+              title={getLocaleString("forgotPasswordButton")}
+              onPress={() => goToForgotPassword()}
+              outline
+            />
+          )}
+          <Separator />
           <Button
-            title={getLocaleString("forgotPasswordButton")}
-            onPress={() => goToForgotPassword()}
-            outline
+            title={getLocaleString("topicQuestionContinueButton")}
+            onPress={() => submit()}
+            loading={
+              verify_email.fetching ||
+              signup.fetching ||
+              loginProps.fetching ||
+              user.fetching
+            }
+            disabled={
+              !forgotPassword
+                ? resetPassword
+                  ? password.length < 6 &&
+                    passwordConfirm !== password &&
+                    !resetToken
+                  : (!verify && password.length < 6) || !validateEmail()
+                : false
+            }
           />
-        )}
-        <Separator />
-        <Button
-          title={getLocaleString("topicQuestionContinueButton")}
-          onPress={() => submit()}
-          loading={
-            verify_email.fetching ||
-            signup.fetching ||
-            loginProps.fetching ||
-            user.fetching
-          }
-          disabled={
-            !forgotPassword
-              ? resetPassword
-                ? password.length < 6 &&
-                  passwordConfirm !== password &&
-                  !resetToken
-                : (!verify && password.length < 6) || !validateEmail()
-              : false
-          }
-        />
-      </BottomContainer>
-      <KeyboardSpacer />
+        </BottomContainer>
+      </KeyboardAvoidingView>
     </Container>
   );
 }

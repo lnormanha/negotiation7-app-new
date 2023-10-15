@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, View, ActivityIndicator, ScrollView } from "react-native";
+import {
+  FlatList,
+  View,
+  ActivityIndicator,
+  ScrollView,
+  KeyboardAvoidingView,
+} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ScrollIntoView, wrapScrollView } from "react-native-scroll-into-view";
@@ -296,53 +302,56 @@ function TopicScreen(props) {
 
   return (
     <Container>
-      <Header
-        title={getLocaleString("negotiationHeader")}
-        showLeftButton
-        onPressLeft={() => goBack()}
-        showRightButton
-        rightIcon={Icons.report}
-        onPressReport={() => goToReport()}
-        isNegotiation
-      />
-      <TopicSliderArea>
-        <FlatList
-          data={topics}
-          renderItem={({ item, index }) => renderTopicItem(item, index)}
-          horizontal
-          bounces={false}
-          contentContainerStyle={{
-            alignSelf: "flex-end",
-          }}
-          extraData={fetching && report}
-          showsHorizontalScrollIndicator={false}
-          ref={(slider) => (sliderRef = slider)}
+      <KeyboardAvoidingView behavior="position">
+        <Header
+          title={getLocaleString("negotiationHeader")}
+          showLeftButton
+          onPressLeft={() => goBack()}
+          showRightButton
+          rightIcon={Icons.report}
+          onPressReport={() => goToReport()}
+          isNegotiation
         />
-      </TopicSliderArea>
-
-      <CustomScrollView>
-        <TopMargin />
-        {askNextCoin ? renderAskCoin() : renderQuestionsContent()}
-      </CustomScrollView>
-
-      {/* <FlexAlign /> */}
-      {!askNextCoin && (
-        <BottomContainer showShadow={current_topic.id == 6}>
-          <Button
-            title={
-              current_topic.id == 8
-                ? getLocaleString("topicQuestionFinalizeButton")
-                : getLocaleString("topicQuestionContinueButton")
-            }
-            showIcon={current_topic.id == 8 ? false : true}
-            spaced_icons
-            onPress={() => submitAnswers(current_topic.id != 6 ? false : true)}
-            loading={fetching}
-            disabled={verifyAnswers() || fetching}
+        <TopicSliderArea>
+          <FlatList
+            data={topics}
+            renderItem={({ item, index }) => renderTopicItem(item, index)}
+            horizontal
+            bounces={false}
+            contentContainerStyle={{
+              alignSelf: "flex-end",
+            }}
+            extraData={fetching && report}
+            showsHorizontalScrollIndicator={false}
+            ref={(slider) => (sliderRef = slider)}
           />
-        </BottomContainer>
-      )}
-      <KeyboardSpacer />
+        </TopicSliderArea>
+
+        <CustomScrollView>
+          <TopMargin />
+          {askNextCoin ? renderAskCoin() : renderQuestionsContent()}
+        </CustomScrollView>
+
+        {/* <FlexAlign /> */}
+        {!askNextCoin && (
+          <BottomContainer showShadow={current_topic.id == 6}>
+            <Button
+              title={
+                current_topic.id == 8
+                  ? getLocaleString("topicQuestionFinalizeButton")
+                  : getLocaleString("topicQuestionContinueButton")
+              }
+              showIcon={current_topic.id == 8 ? false : true}
+              spaced_icons
+              onPress={() =>
+                submitAnswers(current_topic.id != 6 ? false : true)
+              }
+              loading={fetching}
+              disabled={verifyAnswers() || fetching}
+            />
+          </BottomContainer>
+        )}
+      </KeyboardAvoidingView>
     </Container>
   );
 }
